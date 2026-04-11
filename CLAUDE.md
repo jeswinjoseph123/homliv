@@ -30,19 +30,21 @@ npm run typecheck  # TypeScript check
 
 ```
 src/
-  components/
-    layout/        # Navbar, Footer
-    shared/        # PropertyCard, LogoMark, StatusBadge
-    ui/            # shadcn/ui components (auto-generated, do not edit)
-  pages/           # One file per route
-  data/            # Mock data only — mockProperties.ts (14 properties)
-  hooks/           # useWishlist, useChat (local state)
-  lib/             # utils.ts (shadcn helper + custom utils)
-  types/           # Shared TypeScript interfaces
+  app/
+    components/
+      layout/        # Navbar, Footer
+      shared/        # PropertyCard, LogoMark, StatusBadge, ChatInterface
+      tenant/        # TenantDashboard split components (see Tenant Dashboard section)
+      ui/            # shadcn/ui components (auto-generated, do not edit)
+    pages/           # One file per route
+  data/              # Mock data only — mockProperties.ts (14 properties)
+  hooks/             # useWishlist, useChat (local state)
+  lib/               # utils.ts (shadcn helper + custom utils)
+  types/             # Shared TypeScript interfaces (index.ts)
 ```
 
 **Never put business logic inside pages.** Extract to hooks.
-**Never import from `../../../`** — use path aliases `@/components`, `@/data`, `@/hooks`.
+**Never import from `../../../`** — use path aliases `@/app/components`, `@/data`, `@/hooks`, `@/types`.
 
 ---
 
@@ -128,33 +130,54 @@ className="border border-ghost/40 rounded-lg px-4 py-3 focus:border-coral outlin
 ```tsx
 // Property Card — inset image pattern
 // Outer: className="bg-white rounded-2xl overflow-hidden cursor-pointer"
-//        style={{ border: '1px solid rgba(220,193,183,0.18)', shadow: '0 2px 16px rgba(23,27,43,0.06)' }}
+//        style={{ border: '1px solid rgba(220,193,183,0.18)', boxShadow: '0 4px 20px rgba(23,27,43,0.09), 0 1px 4px rgba(23,27,43,0.05)' }}
 // Image: className="relative m-3 rounded-xl overflow-hidden h-52"
 
-// Dashboard stat card
-className="bg-white rounded-xl p-5 shadow-[0_2px_8px_rgba(23,27,43,0.04)]"
+// Dashboard stat card — white
+className="bg-white rounded-xl p-5 shadow-[0_4px_20px_rgba(23,27,43,0.09),_0_1px_4px_rgba(23,27,43,0.05)]"
 
-// Dark card (How-It-Works landlord side, App Download)
-style={{ background: 'linear-gradient(145deg, #2d3142 0%, #232637 100%)' }}
+// Dashboard stat card — coral gradient
+style={{ background: 'linear-gradient(145deg, #d47550 0%, #b85530 100%)', boxShadow: '0 8px 32px rgba(180,80,40,0.30), 0 2px 8px rgba(180,80,40,0.15)' }}
+
+// Dashboard stat card — slate/dark
+style={{ background: 'linear-gradient(145deg, #4f5d75 0%, #3d4d63 100%)', boxShadow: '0 8px 32px rgba(61,77,99,0.30), 0 2px 8px rgba(61,77,99,0.15)' }}
+
+// Dark card (How-It-Works landlord side, App Download, Payments hero)
+style={{ background: 'linear-gradient(145deg, #2d3142 0%, #232637 100%)', boxShadow: '0 8px 32px rgba(23,27,43,0.40), 0 2px 8px rgba(23,27,43,0.15)' }}
 ```
+
+### Shadow System
+
+Every surface has a shadow — no flat cards. Use color-tinted shadows for colored cards:
+
+| Card type | Shadow value |
+|---|---|
+| White card | `0 4px 20px rgba(23,27,43,0.09), 0 1px 4px rgba(23,27,43,0.05)` |
+| Coral gradient card | `0 8px 32px rgba(180,80,40,0.30), 0 2px 8px rgba(180,80,40,0.15)` |
+| Slate gradient card | `0 8px 32px rgba(61,77,99,0.30), 0 2px 8px rgba(61,77,99,0.15)` |
+| Jet dark card | `0 8px 32px rgba(23,27,43,0.40), 0 2px 8px rgba(23,27,43,0.15)` |
+| Navbar (floating) | `0 4px 24px rgba(18,20,31,0.50), 0 1px 4px rgba(18,20,31,0.30)` |
+| Footer (upward) | `0 -8px 32px rgba(23,27,43,0.12)` |
+| Gallery / hero image | `0 8px 32px rgba(23,27,43,0.12)` |
 
 ### Navigation
 
 ```tsx
 // Navbar — glassmorphism on all pages
-style={{ background: 'rgba(18,20,31,0.90)' }}
+style={{ background: 'rgba(18,20,31,0.90)', boxShadow: '0 4px 24px rgba(18,20,31,0.50), 0 1px 4px rgba(18,20,31,0.30)' }}
 className="backdrop-blur-xl sticky top-0 z-50"
 
 // "Listings" link lives on the LEFT beside the logo — not in the right nav
 
-// Landlord Dashboard Sidebar
-className="bg-slate-brand w-[260px] h-screen sticky top-0 flex flex-col"
+// Both dashboard sidebars — bg-slate-brand, right-side depth shadow
+style={{ boxShadow: '6px 0 40px rgba(23,27,43,0.55), 2px 0 8px rgba(23,27,43,0.25)' }}
 
-// Sidebar active item — "cut-out" effect
-className="bg-surface text-jet rounded-l-xl ml-2 font-semibold"
+// Sidebar active item — coral gradient pill (BOTH dashboards)
+className="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-white font-semibold text-sm"
+style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)', boxShadow: '0 4px 12px rgba(180,80,40,0.35)' }}
 
 // Sidebar inactive item
-className="text-white/70 hover:text-white px-4 py-3 rounded-l-xl ml-2 transition-colors"
+className="text-white/60 hover:text-white hover:bg-white/[0.07] px-4 py-3 mx-2 rounded-xl text-sm font-medium transition-colors"
 ```
 
 ---
@@ -242,12 +265,90 @@ Footer
 
 ---
 
+## Tenant Dashboard — Component Split
+
+`TenantDashboard.tsx` is a **thin shell** — it owns state and wires components together only. All tab UI lives in `src/app/components/tenant/`.
+
+```
+src/app/components/tenant/
+  types.ts              — Tab union, LocalTicket, TicketForm interfaces + CATEGORY_STYLE, PRIORITY_STYLE maps
+  TenantSidebar.tsx     — sidebar nav + mobile backdrop (props: activeTab, onNav, isOpen, onClose)
+  OverviewTab.tsx       — overview dashboard grid (props: wishlistItems, tickets, onNav, onRaiseTicket)
+  WishlistTab.tsx       — saved properties grid (props: wishlistItems, onRemove, onClear)
+  TenancyTab.tsx        — lease details, inventory, map (props: onNav, onRaiseTicket)
+  MaintenanceTab.tsx    — stat cards + ticket cards (props: tickets, onRaiseTicket)
+  PaymentsTab.tsx       — payments hero + history (no special props)
+  SettingsTab.tsx       — profile, notifications, security (no special props)
+  RaiseTicketModal.tsx  — raise ticket modal (props: open, onClose, form, onFormChange)
+```
+
+**State owned by TenantDashboard.tsx:**
+- `activeTab` — current visible tab
+- `sidebarOpen` — mobile sidebar toggle
+- `showTicketModal` — raise ticket modal visibility (triggered from Overview, Tenancy, Maintenance)
+- `ticketForm` — raise ticket form state
+- `wishlisted` — array of wishlisted property IDs
+
+**Tenant-specific types** live in `src/app/components/tenant/types.ts`, not `src/types/index.ts`:
+- `Tab` — union of all tab IDs
+- `LocalTicket` — id, title, category, priority, status, date, image, response, description
+- `TicketForm` — title, category, description, priority
+- `CATEGORY_STYLE` — Record mapping category → Tailwind classes
+- `PRIORITY_STYLE` — Record mapping priority → Tailwind classes
+
+**Mock ticket data** (`LOCAL_TICKETS`) lives as a module-level constant in `TenantDashboard.tsx` and is passed as props to `OverviewTab` and `MaintenanceTab`.
+
+---
+
+## Landlord Dashboard — Component Split
+
+`LandlordDashboard.tsx` is a **thin shell** — it owns state and wires components together only. All tab UI lives in `src/app/components/landlord/`.
+
+```
+src/app/components/landlord/
+  types.ts                — Tab union, NewPropertyForm interface + PRIORITY_CLASSES map
+  LandlordSidebar.tsx     — sidebar nav + mobile backdrop (props: activeTab, onNav, isOpen, onClose)
+  OverviewTab.tsx         — KPI cards, upcoming rent, recent activity (props: onListProperty)
+  PropertiesTab.tsx       — property list rows (props: onListNew)
+  TenantsTab.tsx          — tenants table (no special props)
+  MessagesTab.tsx         — link to chat page (no special props)
+  MaintenanceTab.tsx      — maintenance tickets table (no special props)
+  PaymentsTab.tsx         — payment stats + history (no special props)
+  SettingsTab.tsx         — profile, settings list (no special props)
+  ListPropertyModal.tsx   — 3-step listing wizard (props: open, onClose — owns form state internally)
+```
+
+**State owned by LandlordDashboard.tsx:**
+- `activeTab` — current visible tab
+- `rtbDismissed` — RTB compliance banner toggle
+- `sidebarOpen` — mobile sidebar toggle
+- `showNewPropertyModal` — modal visibility
+
+**Key difference from TenantDashboard:** `ListPropertyModal` owns its own `newProp` form state and `modalStep` internally (unlike `RaiseTicketModal` which receives form state as props), because no other tab needs access to the property form data.
+
+---
+
+## Shared Chat Component
+
+`src/app/components/shared/ChatInterface.tsx` — reusable chat UI used by:
+- `TenantDashboard` chats tab (embedded, no outer chrome)
+- `ChatPage` (`/chat/:tenancyId`) — wrapped in Navbar only
+
+The chats tab content wrapper must use `flex overflow-hidden` (not `overflow-y-auto`) so inner panels manage their own scroll:
+```tsx
+className={activeTab === 'chats' ? 'flex overflow-hidden' : 'overflow-y-auto'}
+```
+
+The "Suggest Viewing" date picker is a **floating absolute card** (`bottom-[68px] left-4 w-[520px]`), not a full-width panel.
+
+---
+
 ## Component Contracts
 
 ### `<LogoMark />`
 ```ts
 interface LogoMarkProps {
-  size?: number;   // default 24
+  size?: number;      // default 24
   className?: string; // use "text-coral" for coral colour
 }
 ```
@@ -271,11 +372,31 @@ interface StatusBadgeProps {
 // Open → coral, Resolved → green, Overdue → red, In Progress → amber
 ```
 
+### `<TenantSidebar />`
+```ts
+interface TenantSidebarProps {
+  activeTab: Tab;
+  onNav: (id: Tab) => void;
+  isOpen: boolean;
+  onClose: () => void;
+}
+```
+
+### `<RaiseTicketModal />`
+```ts
+interface RaiseTicketModalProps {
+  open: boolean;
+  onClose: () => void;
+  form: TicketForm;
+  onFormChange: (form: TicketForm) => void;
+}
+```
+
 ---
 
 ## TypeScript Interfaces
 
-Keep all shared types in `src/types/index.ts`:
+Keep all **shared** types in `src/types/index.ts`. Tenant-dashboard-specific types (`Tab`, `LocalTicket`, `TicketForm`) live in `src/app/components/tenant/types.ts` — do not move them to `src/types/index.ts`.
 
 ```ts
 export interface Property {
@@ -365,6 +486,33 @@ All routes are client-side. No auth guard needed — mock navigation only.
 
 ---
 
+## Dashboard Layout Patterns
+
+Both `TenantDashboard` and `LandlordDashboard` share the same shell structure:
+
+```tsx
+// Outer shell
+<div className="h-screen flex flex-col overflow-hidden bg-surface-low">
+  <Navbar ... />
+  <div className="flex flex-1 overflow-hidden min-h-0">
+    <Sidebar ... />                          // bg-slate-brand, w-[210px]
+    <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className={`flex-1 min-h-0 w-full ${
+        activeTab === 'chats' ? 'flex overflow-hidden' : 'overflow-y-auto'
+      }`}>
+        {/* Tab content */}
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+**Tab content max-width:** `max-w-[1100px] mx-auto w-full` — apply to all tab content wrappers.
+
+**Panel-based tabs** (chats) must set the content wrapper to `flex overflow-hidden` so inner columns manage their own scroll. All other tabs use `overflow-y-auto`.
+
+---
+
 ## What NOT To Do
 
 - **Never** use `Inter` imported via `@fontsource` — use Google Fonts `<link>` in `index.html`
@@ -373,10 +521,12 @@ All routes are client-side. No auth guard needed — mock navigation only.
 - **Never** use `any` type in TypeScript
 - **Never** use inline `style={{}}` for colors — always use Tailwind classes
 - **Never** install additional UI libraries — only shadcn/ui + lucide-react
-- **Never** create new files in `src/components/ui/` — those are shadcn auto-generated
+- **Never** create new files in `src/app/components/ui/` — those are shadcn auto-generated
 - **Never** use `h1`–`h6` without the corresponding typography class combination above
 - **Never** use Tailwind's `prose` class — write all typography manually
 - **Never** use flat `bg-coral` for primary buttons — always use the terracotta gradient
+- **Never** use Tailwind default shadow presets (`shadow-md`, `shadow-lg`) — always use explicit `boxShadow` values from the Shadow System table above
+- **Never** add new tab components directly inside a dashboard page file — extract to `src/app/components/tenant/` or `src/app/components/landlord/`
 
 ---
 
@@ -398,3 +548,40 @@ fix: correct coral hover state on mobile
 style: align listing grid gap to 24px minimum
 chore: update CLAUDE.md project intelligence
 ```
+
+## graphify
+
+This project has a graphify knowledge graph at graphify-out/.
+
+Rules:
+- Before answering architecture or codebase questions, read graphify-out/GRAPH_REPORT.md for god nodes and community structure
+- If graphify-out/wiki/index.md exists, navigate it instead of reading raw files
+- After modifying code files in this session, run `python3 -c "from graphify.watch import _rebuild_code; from pathlib import Path; _rebuild_code(Path('.'))"` to keep the graph current
+
+### God Nodes (most connected — touch these carefully)
+
+| Node | Edges | Why it matters |
+|---|---|---|
+| `UI Utils (cn helper)` | 39 | Every shadcn/ui component routes through this — breaking it breaks all UI |
+| `TenantDashboard Page (Shell)` | 13 | Orchestrates all tenant tab components + state |
+| `Mock Properties Data` | 9 | Single source for listings, chat conversations, AND wishlist data |
+| `Client-Side Router (routes.tsx)` | 9 | All 8 routes wired here |
+| `Sidebar UI Component (shadcn)` | 9 | Composite: composes Button, Input, Separator, Skeleton, Tooltip, Sheet |
+| `LandlordDashboard Page` | 8 | Landlord-side equivalent of TenantDashboard |
+
+### Key Architectural Insights (from graph run 2026-04-11)
+
+- **`mockProperties.ts` is a hidden data hub** — it exports properties, tenants, tickets, AND conversations. Replacing it with a real API requires touching listings, chat, wishlist, and maintenance simultaneously.
+- **`ChatInterface` is dual-context** — used as an embedded tab inside `TenantDashboard` AND as a standalone `ChatPage`. The `flex overflow-hidden` wrapper rule exists because of this dual usage.
+- **Ireland compliance lives in two places** — RPZ badge logic is in `PropertyCard.tsx`, RTB banner is in `LandlordDashboard.tsx`. Both implement rules documented only in `CLAUDE.md`. If you touch those components, check the Ireland-Specific Rules section.
+- **`AmenityTag` is structurally disconnected from `PropertyCard`** — they're semantically related but have no import edge. AmenityTag was extracted from PropertyCard's inline rendering but the dependency was never formalized.
+- **39 shadcn/ui components all depend on `cn()` in `src/app/components/ui/utils.ts`** — never edit or move this file.
+
+### Community Map (39 communities, graph.html for full view)
+
+Key communities:
+- **Tenant Dashboard Feature** (22 nodes) — `TenantDashboard`, tab components, `LocalTicket`/`TicketForm` types
+- **App Routing & Pages** (10 nodes) — `App.tsx`, `routes.tsx`, all 8 page components
+- **Brand Identity** (3 nodes, cohesion 1.0) — `Navbar`, `Footer`, `LogoMark` — always move together
+- **Auth Layout** (4 nodes) — `TenantLoginPage`, `LandlordSignupPage`, 50/50 split pattern
+- **shadcn/ui Primitive Components** (74 nodes) — auto-generated, never edit directly
