@@ -10,7 +10,7 @@ export type Tab =
 export interface NewPropertyForm {
   address: string;
   eircode: string;
-  type: string;
+  type: 'Single Room' | 'Double Room' | 'En-Suite' | 'Studio' | 'Penthouse';
   rent: string;
   bedrooms: string;
   bathrooms: string;
