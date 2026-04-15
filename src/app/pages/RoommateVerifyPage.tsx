@@ -162,7 +162,11 @@ export function RoommateVerifyPage() {
                   placeholder="••••••"
                   className="w-full bg-[#f0f1f3] rounded-xl px-4 py-3 text-sm text-jet outline-none focus:bg-[#e8e9ec] transition-colors tracking-[0.2em] text-center font-bold"
                   value={code1}
-                  onChange={(e) => setCode1(e.target.value.replace(/\D/g, ''))}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/\D/g, '').slice(0, 6)
+                    setCode1(val)
+                    if (val.length === 6) handleNext()
+                  }}
                 />
               </div>
             )}
@@ -226,7 +230,11 @@ export function RoommateVerifyPage() {
                   placeholder="••••••"
                   className="w-full bg-[#f0f1f3] rounded-xl px-4 py-3 text-sm text-jet outline-none focus:bg-[#e8e9ec] transition-colors tracking-[0.2em] text-center font-bold"
                   value={code2}
-                  onChange={(e) => setCode2(e.target.value.replace(/\D/g, ''))}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/\D/g, '').slice(0, 6)
+                    setCode2(val)
+                    if (val.length === 6) handleNext()
+                  }}
                 />
               </div>
             )}
