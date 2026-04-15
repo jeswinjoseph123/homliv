@@ -4,8 +4,8 @@ import { Check, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 import { Navbar } from '../../components/layout/Navbar';
 import { type ListRoomForm } from '../../components/roommate/types';
-import { mockProperties } from '../../../data/mockProperties';
-import type { Property } from '../../../types';
+import { mockProperties } from '@/data/mockProperties';
+import type { Property } from '@/types';
 
 const EMPTY_FORM: ListRoomForm = {
   listingType: 'permanent',
