@@ -155,12 +155,8 @@ function SuggestViewingPanel({ onSend, onClose }: { onSend: () => void; onClose:
               return (
                 <button
                   key={slot}
-                  className="py-1.5 rounded-lg text-[0.68rem] font-semibold text-center transition-colors"
-                  style={
-                    active
-                      ? { background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)', color: '#fff' }
-                      : { background: '#f5f5f7', color: '#4f5d75' }
-                  }
+                  className={`py-1.5 rounded-lg text-[0.68rem] font-semibold text-center transition-colors ${active ? 'text-white' : 'bg-surface-low text-slate-brand'}`}
+                  style={active ? { background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' } : undefined}
                   onClick={() => setSelectedSlot(slot)}
                 >
                   {slot}
@@ -287,8 +283,7 @@ export function ChatInterface() {
           <div className="relative">
             <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-brand/50" />
             <input
-              className="w-full pl-8 pr-3 py-2 rounded-lg text-sm outline-none text-jet placeholder:text-slate-brand/50"
-              style={{ background: '#f5f5f7' }}
+              className="w-full pl-8 pr-3 py-2 rounded-lg text-sm outline-none text-jet placeholder:text-slate-brand/50 bg-surface-low"
               placeholder="Search conversations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -473,8 +468,8 @@ export function ChatInterface() {
               <Paperclip size={17} />
             </button>
             <input
-              className="flex-1 px-4 py-2.5 rounded-xl text-sm outline-none text-jet placeholder:text-slate-brand/50 transition-colors"
-              style={{ background: '#f5f5f7', border: '1px solid transparent' }}
+              className="flex-1 px-4 py-2.5 rounded-xl text-sm outline-none text-jet placeholder:text-slate-brand/50 transition-colors bg-surface-low"
+              style={{ border: '1px solid transparent' }}
               onFocus={(e) => (e.currentTarget.style.borderColor = '#ef8354')}
               onBlur={(e) => (e.currentTarget.style.borderColor = 'transparent')}
               placeholder={`Message ${activeConv.tenantName.split(' ')[0]}…`}
