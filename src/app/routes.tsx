@@ -11,6 +11,7 @@ import { LandlordVerifyPage } from './pages/LandlordVerifyPage';
 import { RoommateSignupPage } from './pages/RoommateSignupPage';
 import { RoommateVerifyPage } from './pages/RoommateVerifyPage';
 import { RoommateDashboard } from './pages/RoommateDashboard';
+import { ListRoomPage } from './pages/roommate/ListRoomPage';
 
 export const router = createBrowserRouter([
   { path: '/',                  Component: HomePage },
@@ -28,6 +29,6 @@ export const router = createBrowserRouter([
   // Phase 2 stubs — redirect to /roommate until dashboard is built
   { path: '/roommate/dashboard', Component: RoommateDashboard },
   { path: '/roommate/listings',  element: <Navigate to="/roommate" replace /> },
-  { path: '/roommate/list-room', element: <Navigate to="/roommate" replace /> },
+  { path: '/roommate/list-room', Component: ListRoomPage },
   { path: '*',                  Component: HomePage },
 ]);
