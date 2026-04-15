@@ -1,4 +1,4 @@
-import type { Property, Tenant, MaintenanceTicket } from '@/types';
+import type { Property, Tenant, MaintenanceTicket, Report } from '@/types';
 
 export const mockProperties = [
   {
@@ -324,6 +324,62 @@ export const mockProperties = [
     houseRules: ['6-month minimum', 'No smoking', 'Students welcome'],
     transport: ['Drumcondra Rail — 7 min walk', 'City centre bus — 20 min'],
   },
+  {
+    id: 'r1',
+    title: 'Double room in shared 3-bed, Ranelagh',
+    type: 'Double Room',
+    location: 'Mountpleasant Ave, Ranelagh, Dublin 6',
+    eircode: 'D06 F2X1',
+    price: 750,
+    images: [
+      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
+      'https://images.unsplash.com/photo-1657639754502-3c138cb24b4c?w=800',
+    ],
+    amenities: ['WiFi', 'Bills Inc.', 'Washing Machine'],
+    bedrooms: 1,
+    bathrooms: 1,
+    area: 20,
+    available: true,
+    wishlistCount: 4,
+    isRPZ: true,
+    landlord: { name: 'Ciarán Murphy', verified: false, avatar: 'https://i.pravatar.cc/150?img=60' },
+    description: 'One double room available in a friendly 3-bed apartment. Current tenant going abroad temporarily. Bills included. Non-smokers only.',
+    houseRules: ['Non-smokers only', 'Bills included', 'No pets'],
+    transport: ['Ranelagh Luas — 5 min walk', 'City centre bus — 10 min'],
+    postedBy: 'roommate',
+    roommateVerified: false,
+    listingType: 'temporary',
+    availableFrom: '2026-04-20',
+    availableUntil: '2026-07-31',
+  },
+  {
+    id: 'r2',
+    title: 'Single room — housemate moved out',
+    type: 'Single Room',
+    location: 'South Circular Road, Dublin 8',
+    eircode: 'D08 HK22',
+    price: 620,
+    images: [
+      'https://images.unsplash.com/photo-1738748444676-113d30c9a25b?w=800',
+      'https://images.unsplash.com/photo-1768487422639-7ba3900d0f02?w=800',
+    ],
+    amenities: ['WiFi', 'Garden', 'Parking'],
+    bedrooms: 1,
+    bathrooms: 1,
+    area: 16,
+    available: true,
+    wishlistCount: 11,
+    isRPZ: true,
+    landlord: { name: 'Aoife Brennan', verified: false, avatar: 'https://i.pravatar.cc/150?img=32' },
+    description: 'Room available in a 4-bed house. One housemate moved back to Cork. Looking for working professional or postgrad student.',
+    houseRules: ['Professionals preferred', 'No smoking', 'Quiet household'],
+    transport: ['South Circular Road bus — 2 min walk', 'Portobello — 8 min walk'],
+    postedBy: 'roommate',
+    roommateVerified: false,
+    listingType: 'permanent',
+    availableFrom: '2026-04-15',
+    availableUntil: null,
+  },
 ] satisfies Property[];
 
 export const mockMessages = [
@@ -385,3 +441,5 @@ export const mockTickets = [
   { id: 'tk2', tenantName: 'James O\'Connor', property: 'Single Room in Rathmines', issue: 'Leaking tap in bathroom', status: 'In Progress', date: '2024-01-22', priority: 'Medium' },
   { id: 'tk3', tenantName: 'James O\'Connor', property: 'Single Room in Rathmines', issue: 'Window latch broken', status: 'Resolved', date: '2024-01-10', priority: 'Low' },
 ] satisfies MaintenanceTicket[];
+
+export const mockReports: Report[] = [];
