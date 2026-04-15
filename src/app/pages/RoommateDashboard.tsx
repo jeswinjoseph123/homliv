@@ -6,15 +6,15 @@ import { MyListingsTab } from '../components/roommate/MyListingsTab';
 import { MessagesTab } from '../components/roommate/MessagesTab';
 import { SettingsTab } from '../components/roommate/SettingsTab';
 import { type Tab } from '../components/roommate/types';
-import { mockProperties } from '../../data/mockProperties';
-import type { Property } from '../../types';
-
-const INITIAL_LISTINGS = mockProperties.filter((p) => p.postedBy === 'roommate');
+import { mockProperties } from '@/data/mockProperties';
+import type { Property } from '@/types';
 
 export function RoommateDashboard() {
   const [activeTab, setActiveTab] = useState<Tab>('overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [listings, setListings] = useState<Property[]>(INITIAL_LISTINGS);
+  const [listings, setListings] = useState<Property[]>(() =>
+    mockProperties.filter((p) => p.postedBy === 'roommate')
+  );
 
   const hasActiveListing = listings.length > 0;
   const temporaryListing = listings.find((l) => l.listingType === 'temporary');

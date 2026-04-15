@@ -1,5 +1,5 @@
 import { ChevronRight, FlaskConical } from 'lucide-react';
-import { useRoommateStore } from '../../../hooks/useRoommateStore';
+import { useRoommateStore } from '@/hooks/useRoommateStore';
 
 const SETTINGS_ITEMS = ['Notification Preferences', 'Security', 'Privacy'];
 

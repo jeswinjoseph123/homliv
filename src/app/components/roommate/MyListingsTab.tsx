@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Plus, MapPin, AlertTriangle, RefreshCw, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router';
-import type { Property } from '../../../types';
+import type { Property } from '@/types';
 
 const MODULE_NOW = new Date();
 const MIN_EXTEND_DATE = new Date(MODULE_NOW.getTime() + 86400000).toISOString().split('T')[0];

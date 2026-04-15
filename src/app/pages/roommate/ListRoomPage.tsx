@@ -160,10 +160,11 @@ export function ListRoomPage() {
                 <div className="mb-5">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                      <label htmlFor="list-from" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                         Available from *
                       </label>
                       <input
+                        id="list-from"
                         type="date"
                         className="w-full bg-[#f0f1f3] rounded-xl px-4 py-3 text-sm text-jet outline-none focus:bg-[#e8e9ec] transition-colors"
                         value={form.availableFrom}
@@ -171,10 +172,11 @@ export function ListRoomPage() {
                       />
                     </div>
                     <div>
-                      <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                      <label htmlFor="list-until" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                         Available until *
                       </label>
                       <input
+                        id="list-until"
                         type="date"
                         className="w-full bg-[#f0f1f3] rounded-xl px-4 py-3 text-sm text-jet outline-none focus:bg-[#e8e9ec] transition-colors"
                         min={form.availableFrom || new Date().toISOString().split('T')[0]}
@@ -192,10 +194,11 @@ export function ListRoomPage() {
               )}
 
               <div className="mb-4">
-                <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                <label htmlFor="list-title" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                   Listing Title
                 </label>
                 <input
+                  id="list-title"
                   type="text"
                   placeholder="e.g. Double room in shared 3-bed, Ranelagh"
                   className="w-full bg-[#f0f1f3] rounded-xl px-4 py-3 text-sm text-jet outline-none focus:bg-[#e8e9ec] transition-colors placeholder:text-slate-brand/40"
@@ -228,10 +231,11 @@ export function ListRoomPage() {
 
               <div className="grid grid-cols-2 gap-3 mb-4">
                 <div>
-                  <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                  <label htmlFor="list-location" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                     Location
                   </label>
                   <input
+                    id="list-location"
                     type="text"
                     placeholder="e.g. Ranelagh, Dublin 6"
                     className="w-full bg-[#f0f1f3] rounded-xl px-4 py-3 text-sm text-jet outline-none focus:bg-[#e8e9ec] transition-colors placeholder:text-slate-brand/40"
@@ -240,10 +244,11 @@ export function ListRoomPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                  <label htmlFor="list-eircode" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                     Eircode
                   </label>
                   <input
+                    id="list-eircode"
                     type="text"
                     placeholder="D06 X1Y2"
                     className="w-full bg-[#f0f1f3] rounded-xl px-4 py-3 text-sm text-jet outline-none focus:bg-[#e8e9ec] transition-colors placeholder:text-slate-brand/40"
@@ -254,10 +259,11 @@ export function ListRoomPage() {
               </div>
 
               <div className="mb-4">
-                <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                <label htmlFor="list-price" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                   Monthly Rent (€)
                 </label>
                 <input
+                  id="list-price"
                   type="number"
                   placeholder="750"
                   className="w-full bg-[#f0f1f3] rounded-xl px-4 py-3 text-sm text-jet outline-none focus:bg-[#e8e9ec] transition-colors placeholder:text-slate-brand/40"
@@ -267,10 +273,11 @@ export function ListRoomPage() {
               </div>
 
               <div className="mb-6">
-                <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                <label htmlFor="list-description" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                   Description
                 </label>
                 <textarea
+                  id="list-description"
                   rows={3}
                   placeholder="Describe the room and living situation..."
                   className="w-full bg-[#f0f1f3] rounded-xl px-4 py-3 text-sm text-jet outline-none focus:bg-[#e8e9ec] transition-colors placeholder:text-slate-brand/40 resize-none"
@@ -311,10 +318,11 @@ export function ListRoomPage() {
               </div>
 
               <div className="mb-6">
-                <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                <label htmlFor="list-rules" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                   House Rules (one per line)
                 </label>
                 <textarea
+                  id="list-rules"
                   rows={4}
                   placeholder={"No smoking\nNo pets\nQuiet household"}
                   className="w-full bg-[#f0f1f3] rounded-xl px-4 py-3 text-sm text-jet outline-none focus:bg-[#e8e9ec] transition-colors placeholder:text-slate-brand/40 resize-none"
@@ -335,14 +343,14 @@ export function ListRoomPage() {
               <div className="bg-surface-low rounded-xl p-4 mb-5">
                 <p className="text-xs font-bold uppercase tracking-[0.05em] text-slate-brand mb-3">Listing Summary</p>
                 <div className="flex flex-col gap-2">
-                  {[
-                    { label: 'Listing type', value: form.listingType === 'permanent' ? 'Permanent' : 'Temporary' },
-                    { label: 'Available from', value: formatIrishDate(form.availableFrom) },
-                    { label: 'Available until', value: form.listingType === 'temporary' ? formatIrishDate(form.availableUntil) : 'No end date' },
-                    { label: 'Room type', value: form.type },
-                    { label: 'Location', value: form.location || '—' },
-                    { label: 'Monthly rent', value: form.price ? `€${form.price}/mo` : '—' },
-                  ].map(({ label, value }) => (
+                  {([
+                    { label: 'Listing type', value: form.listingType === 'permanent' ? 'Permanent' : 'Temporary', show: true },
+                    { label: 'Available from', value: formatIrishDate(form.availableFrom), show: form.listingType === 'temporary' },
+                    { label: 'Available until', value: form.listingType === 'temporary' ? formatIrishDate(form.availableUntil) : 'No end date', show: true },
+                    { label: 'Room type', value: form.type, show: true },
+                    { label: 'Location', value: form.location || '—', show: true },
+                    { label: 'Monthly rent', value: form.price ? `€${form.price}/mo` : '—', show: true },
+                  ] as const).filter((row) => row.show).map(({ label, value }) => (
                     <div key={label} className="flex items-center justify-between">
                       <span className="text-xs text-slate-brand">{label}</span>
                       <span className="text-xs font-semibold text-jet">{value}</span>

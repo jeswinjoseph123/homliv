@@ -68,7 +68,7 @@ export function OverviewTab({ onNav, hasActiveListing, expiryDate }: OverviewTab
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
         {/* My Listings */}
         <div className="bg-white rounded-xl p-5 shadow-[0_4px_20px_rgba(23,27,43,0.09),_0_1px_4px_rgba(23,27,43,0.05)]">
           <div className="flex items-center justify-between mb-3">

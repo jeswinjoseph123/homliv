@@ -1,7 +1,8 @@
 import { LayoutDashboard, Home, MessageSquare, Settings } from 'lucide-react';
+import { type ReactNode } from 'react';
 import { type Tab } from './types';
 
-const NAV_ITEMS: { id: Tab; icon: React.ReactNode; label: string }[] = [
+const NAV_ITEMS: { id: Tab; icon: ReactNode; label: string }[] = [
   { id: 'overview',  icon: <LayoutDashboard size={18} />, label: 'Overview' },
   { id: 'listings',  icon: <Home size={18} />,            label: 'My Listings' },
   { id: 'messages',  icon: <MessageSquare size={18} />,   label: 'Messages' },
