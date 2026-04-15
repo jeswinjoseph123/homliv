@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, Navigate } from 'react-router';
 import { HomePage } from './pages/HomePage';
 import { ListingsPage } from './pages/ListingsPage';
 import { PropertyDetailPage } from './pages/PropertyDetailPage';
@@ -8,46 +8,25 @@ import { ChatPage } from './pages/ChatPage';
 import { LandlordDashboard } from './pages/LandlordDashboard';
 import { TenantDashboard } from './pages/TenantDashboard';
 import { LandlordVerifyPage } from './pages/LandlordVerifyPage';
+import { RoommateSignupPage } from './pages/RoommateSignupPage';
+import { RoommateVerifyPage } from './pages/RoommateVerifyPage';
 
 export const router = createBrowserRouter([
-  {
-    path: '/',
-    Component: HomePage,
-  },
-  {
-    path: '/listings',
-    Component: ListingsPage,
-  },
-  {
-    path: '/property/:id',
-    Component: PropertyDetailPage,
-  },
-  {
-    path: '/login',
-    Component: TenantLoginPage,
-  },
-  {
-    path: '/landlord',
-    Component: LandlordSignupPage,
-  },
-  {
-    path: '/dashboard',
-    Component: LandlordDashboard,
-  },
-  {
-    path: '/tenant-dashboard',
-    Component: TenantDashboard,
-  },
-  {
-    path: '/chat/:tenancyId',
-    Component: ChatPage,
-  },
-  {
-    path: '/landlord/verify',
-    Component: LandlordVerifyPage,
-  },
-  {
-    path: '*',
-    Component: HomePage,
-  },
+  { path: '/',                  Component: HomePage },
+  { path: '/listings',          Component: ListingsPage },
+  { path: '/property/:id',      Component: PropertyDetailPage },
+  { path: '/login',             Component: TenantLoginPage },
+  { path: '/landlord',          Component: LandlordSignupPage },
+  { path: '/dashboard',         Component: LandlordDashboard },
+  { path: '/tenant-dashboard',  Component: TenantDashboard },
+  { path: '/chat/:tenancyId',   Component: ChatPage },
+  { path: '/landlord/verify',   Component: LandlordVerifyPage },
+  // Roommate routes
+  { path: '/roommate',          Component: RoommateSignupPage },
+  { path: '/roommate/verify',   Component: RoommateVerifyPage },
+  // Phase 2 stubs — redirect to /roommate until dashboard is built
+  { path: '/roommate/dashboard', Component: () => <Navigate to="/roommate" replace /> },
+  { path: '/roommate/listings',  Component: () => <Navigate to="/roommate" replace /> },
+  { path: '/roommate/list-room', Component: () => <Navigate to="/roommate" replace /> },
+  { path: '*',                  Component: HomePage },
 ]);
