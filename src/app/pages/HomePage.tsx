@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import { Search, Users, Building2, ArrowRight, Shield, Zap, Clock, Star, ChevronRight } from 'lucide-react';
+import { Search, Users, Building2, ArrowRight, Shield, Zap, Clock, Star, ChevronRight, ArrowUp } from 'lucide-react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { PropertyCard } from '../components/shared/PropertyCard';
@@ -80,6 +80,7 @@ export function HomePage() {
   const { isWishlisted, toggle } = useWishlist();
   const [searchQuery, setSearchQuery] = useState('');
   const [statsStarted, setStatsStarted] = useState(false);
+  const [showTopBtn, setShowTopBtn] = useState(false);
   const statsRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -92,6 +93,12 @@ export function HomePage() {
     );
     observer.observe(el);
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setShowTopBtn(window.scrollY > 500);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const featuredProperties = mockProperties.slice(0, 3);
@@ -494,6 +501,22 @@ export function HomePage() {
       </section>
 
       <Footer />
+
+      {/* Back to top */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg transition-all duration-300"
+        style={{
+          background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)',
+          boxShadow: '0 4px 20px rgba(180,80,40,0.45)',
+          opacity: showTopBtn ? 1 : 0,
+          transform: showTopBtn ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.85)',
+          pointerEvents: showTopBtn ? 'auto' : 'none',
+        }}
+        aria-label="Back to top"
+      >
+        <ArrowUp size={18} strokeWidth={2.5} />
+      </button>
     </div>
   );
 }
