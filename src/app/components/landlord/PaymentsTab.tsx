@@ -2,9 +2,9 @@ import { StatusBadge } from '../shared/StatusBadge';
 import { mockTenants } from '../../../data/mockProperties';
 
 const PAYMENT_STATS = [
-  { label: 'Collected This Month', value: '€2,700', cls: 'text-green-600' },
-  { label: 'Pending',              value: '€750',   cls: 'text-amber-500' },
-  { label: 'Overdue',              value: '€950',   cls: 'text-red-600' },
+  { label: 'Collected This Month', value: '€2,700', cls: 'text-jet' },
+  { label: 'Pending',              value: '€750',   cls: 'text-coral' },
+  { label: 'Overdue',              value: '€950',   cls: 'text-coral' },
 ];
 
 export function PaymentsTab() {

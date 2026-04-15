@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 export function MessagesTab() {
   return (
     <div className="flex flex-col items-center justify-center py-20">
-      <MessageSquare size={40} className="text-coral" />
+      <MessageSquare size={40} className="text-slate-brand" />
       <h3 className="font-bold text-lg mt-4 mb-2 text-jet">Go to Full Chat</h3>
       <p className="text-sm mb-6 text-slate-brand">Open the messaging centre to chat with your tenants.</p>
       <Link

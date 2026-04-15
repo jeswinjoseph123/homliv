@@ -1,8 +1,11 @@
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, FlaskConical } from 'lucide-react';
+import { useVerificationStore } from '../../../hooks/useVerificationStore';
 
 const SETTINGS_ITEMS = ['Notification Preferences', 'Payment Methods', 'Security', 'Privacy'];
 
 export function SettingsTab() {
+  const { isVerified, setVerified } = useVerificationStore();
+
   return (
     <>
       <h2 className="font-bold text-xl mb-5 text-jet" style={{ letterSpacing: '-0.01em' }}>Settings</h2>
@@ -12,7 +15,7 @@ export function SettingsTab() {
           <div>
             <p className="font-bold text-base text-jet">Marcus O'Brien</p>
             <p className="text-sm text-slate-brand">marcus@docklandspm.ie</p>
-            <span className="text-xs font-bold px-2 py-0.5 rounded-full mt-1 inline-block bg-coral/10 text-coral">
+            <span className="text-xs font-bold px-2 py-0.5 rounded-full mt-1 inline-block bg-surface-low text-slate-brand">
               Premium Landlord
             </span>
           </div>
@@ -24,6 +27,31 @@ export function SettingsTab() {
               <ChevronRight size={16} className="text-slate-brand" />
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Dev testing card */}
+      <div className="mt-5 rounded-xl p-4 border border-dashed border-ghost/40 bg-surface-low">
+        <div className="flex items-center gap-2 mb-3">
+          <FlaskConical size={14} className="text-slate-brand/60" />
+          <p className="text-xs font-bold tracking-[0.06em] uppercase text-slate-brand/60">Dev Tools</p>
+        </div>
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium text-jet">Verification status</p>
+            <p className="text-xs text-slate-brand mt-0.5">
+              Currently:{' '}
+              <span className={isVerified ? 'text-green-600 font-semibold' : 'text-amber-500 font-semibold'}>
+                {isVerified ? 'Verified' : 'Unverified'}
+              </span>
+            </p>
+          </div>
+          <button
+            onClick={() => setVerified(!isVerified)}
+            className="text-xs font-semibold px-3 py-1.5 rounded-lg border border-ghost/40 text-slate-brand hover:bg-white transition-colors"
+          >
+            {isVerified ? 'Reset to Unverified' : 'Set as Verified'}
+          </button>
         </div>
       </div>
     </>

@@ -1,9 +1,11 @@
 import { Building2, Users, Wrench, TrendingUp, BarChart3, Calendar, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router';
 import { StatusBadge } from '../shared/StatusBadge';
 import { mockTenants } from '../../../data/mockProperties';
 
 interface OverviewTabProps {
   onListProperty: () => void;
+  isVerified: boolean;
 }
 
 const kpis = [
@@ -20,7 +22,17 @@ const RECENT_ACTIVITY = [
   { text: "New message from James O'Connor",          time: 'Yesterday',     dot: 'bg-slate-brand' },
 ];
 
-export function OverviewTab({ onListProperty }: OverviewTabProps) {
+export function OverviewTab({ onListProperty, isVerified }: OverviewTabProps) {
+  const navigate = useNavigate();
+
+  function handleListProperty() {
+    if (!isVerified) {
+      navigate('/landlord/verify');
+    } else {
+      onListProperty();
+    }
+  }
+
   return (
     <>
       <div className="flex items-end justify-between mb-6">
@@ -35,7 +47,7 @@ export function OverviewTab({ onListProperty }: OverviewTabProps) {
         <button
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-opacity hover:opacity-90"
           style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
-          onClick={onListProperty}
+          onClick={handleListProperty}
         >
           <Plus size={14} />
           List Property
@@ -46,7 +58,7 @@ export function OverviewTab({ onListProperty }: OverviewTabProps) {
         {kpis.map((kpi) => (
           <div key={kpi.label} className="bg-white rounded-xl p-5 shadow-[0_4px_20px_rgba(23,27,43,0.09),_0_1px_4px_rgba(23,27,43,0.05)]">
             <div className="flex items-center justify-between mb-2">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-coral/10 text-coral mb-3">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-surface-low text-coral mb-3">
                 {kpi.icon}
               </div>
               <BarChart3 size={14} className="text-coral" />

@@ -18,7 +18,7 @@ export function TenantsTab() {
             </thead>
             <tbody>
               {mockTenants.map((t) => (
-                <tr key={t.id} className={`border-b border-ghost/10 ${t.status === 'overdue' ? 'bg-red-50' : ''}`}>
+                <tr key={t.id} className="border-b border-ghost/10">
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2.5">
                       <img src={t.avatar} alt={t.name} className="w-8 h-8 rounded-full object-cover" />
