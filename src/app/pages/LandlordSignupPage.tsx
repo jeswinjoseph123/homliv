@@ -272,9 +272,30 @@ export function LandlordSignupPage() {
               </button>
             </div>
 
-            <p className="text-xs text-slate-brand/60 text-center">
-              © 2026 HomLiv. Privacy & Terms.
-            </p>
+            {/* Prominent roommate CTA */}
+            <div className="rounded-xl p-4 mb-4" style={{ background: '#fef3e2' }}>
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: '#fde8c8' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9c5a00" strokeWidth="2">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold" style={{ color: '#9c5a00' }}>Looking to rent a spare room?</p>
+                  <p className="text-xs mt-0.5" style={{ color: '#b87a20' }}>You don't need to own the property. List as a Roommate instead.</p>
+                </div>
+              </div>
+              <Link
+                to="/roommate"
+                className="mt-3 w-full flex items-center justify-center py-2.5 rounded-lg text-xs font-bold tracking-[0.05em] uppercase text-white transition-opacity hover:opacity-90"
+                style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
+              >
+                Roommate Portal →
+              </Link>
+            </div>
+
+            <p className="text-xs text-slate-brand/60 text-center">© 2026 HomLiv. Privacy & Terms.</p>
           </form>
         </div>
       </div>
