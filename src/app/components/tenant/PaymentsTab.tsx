@@ -21,7 +21,7 @@ export function PaymentsTab() {
         </div>
         <button
           className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-medium text-jet transition-colors hover:bg-white shrink-0"
-          style={{ border: '1px solid rgba(220,193,183,0.40)', background: 'rgba(250,248,255,0.8)' }}
+          style={{ border: '1px solid rgba(220,193,183,0.40)' }}
           onClick={() => toast.success('Downloading statement…')}
         >
           <Download size={14} className="text-slate-brand" />

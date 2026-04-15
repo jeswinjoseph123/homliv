@@ -116,9 +116,9 @@ export function TenancyTab({ onNav, onRaiseTicket }: TenancyTabProps) {
             ].map(({ item, status }) => (
               <div key={item} className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${status === 'ok' ? 'bg-green-50' : 'bg-coral/10'}`}>
+                  <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${status === 'ok' ? 'bg-surface-low' : 'bg-coral/10'}`}>
                     {status === 'ok'
-                      ? <CheckCircle size={12} className="text-green-600" />
+                      ? <CheckCircle size={12} className="text-slate-brand" />
                       : <AlertTriangle size={11} className="text-coral" />
                     }
                   </div>
