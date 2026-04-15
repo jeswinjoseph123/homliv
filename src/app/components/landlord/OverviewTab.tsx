@@ -78,7 +78,7 @@ export function OverviewTab({ onListProperty, isVerified }: OverviewTabProps) {
           </div>
           <div className="flex flex-col gap-3">
             {mockTenants.map((tenant) => (
-              <div key={tenant.id} className={`flex items-center justify-between ${tenant.status === 'overdue' ? 'bg-red-50' : ''}`}>
+              <div key={tenant.id} className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                   <img src={tenant.avatar} alt={tenant.name} className="w-8 h-8 rounded-full object-cover" />
                   <div>
