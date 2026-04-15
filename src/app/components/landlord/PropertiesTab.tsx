@@ -1,14 +1,26 @@
 import { Plus, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router';
 import { StatusBadge } from '../shared/StatusBadge';
 import { mockProperties } from '../../../data/mockProperties';
 
 interface PropertiesTabProps {
   onListNew: () => void;
+  isVerified: boolean;
 }
 
 const landlordProps = mockProperties.slice(0, 3);
 
-export function PropertiesTab({ onListNew }: PropertiesTabProps) {
+export function PropertiesTab({ onListNew, isVerified }: PropertiesTabProps) {
+  const navigate = useNavigate();
+
+  function handleListNew() {
+    if (!isVerified) {
+      navigate('/landlord/verify');
+    } else {
+      onListNew();
+    }
+  }
+
   return (
     <>
       <div className="flex items-center justify-between mb-5">
@@ -16,7 +28,7 @@ export function PropertiesTab({ onListNew }: PropertiesTabProps) {
         <button
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-opacity hover:opacity-90"
           style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
-          onClick={onListNew}
+          onClick={handleListNew}
         >
           <Plus size={14} />
           List New Property

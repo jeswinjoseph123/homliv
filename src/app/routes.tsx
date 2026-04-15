@@ -7,6 +7,7 @@ import { LandlordSignupPage } from './pages/LandlordSignupPage';
 import { ChatPage } from './pages/ChatPage';
 import { LandlordDashboard } from './pages/LandlordDashboard';
 import { TenantDashboard } from './pages/TenantDashboard';
+import { LandlordVerifyPage } from './pages/LandlordVerifyPage';
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
   {
     path: '/chat/:tenancyId',
     Component: ChatPage,
+  },
+  {
+    path: '/landlord/verify',
+    Component: LandlordVerifyPage,
   },
   {
     path: '*',

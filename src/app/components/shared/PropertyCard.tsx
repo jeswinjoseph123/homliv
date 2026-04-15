@@ -13,8 +13,10 @@ export function PropertyCard({ property, onWishlistToggle, isWishlisted = false 
 
   return (
     <div
-      className="bg-white rounded-2xl overflow-hidden cursor-pointer transition-shadow hover:shadow-[0_8px_40px_rgba(23,27,43,0.10)]"
-      style={{ boxShadow: '0 2px 16px rgba(23,27,43,0.06)', border: '1px solid rgba(220,193,183,0.18)' }}
+      className="bg-white rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1"
+      style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}
+      onMouseEnter={(e) => (e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.12)')}
+      onMouseLeave={(e) => (e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)')}
       onClick={() => navigate(`/property/${property.id}`)}
     >
       {/* Inset image with own rounded corners */}

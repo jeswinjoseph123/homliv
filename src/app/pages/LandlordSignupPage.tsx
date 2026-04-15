@@ -21,10 +21,7 @@ export function LandlordSignupPage() {
   };
 
   return (
-    <div
-      className="min-h-screen flex flex-col lg:flex-row"
-      style={{ fontFamily: "'Inter', sans-serif" }}
-    >
+    <div className="min-h-screen flex flex-col lg:flex-row">
       {/* Left panel */}
       <div
         className="relative flex flex-col justify-between p-8 lg:p-12 bg-jet"
@@ -130,7 +127,10 @@ export function LandlordSignupPage() {
             ))}
           </div>
 
-          <form onSubmit={(e) => { e.preventDefault(); navigate('/dashboard'); }}>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            navigate(activeTab === 'create' ? '/landlord/verify' : '/dashboard');
+          }}>
 
             {/* ── SIGN IN FORM ── */}
             {activeTab === 'signin' && (
