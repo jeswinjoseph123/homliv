@@ -23,6 +23,12 @@ export interface Property {
   description: string;
   houseRules: string[];
   transport: string[];
+  // Roommate fields — optional so existing 14 properties need no changes
+  postedBy?: 'landlord' | 'roommate';
+  roommateVerified?: boolean;
+  listingType?: 'permanent' | 'temporary';
+  availableFrom?: string;       // ISO date string
+  availableUntil?: string | null; // null = permanent
 }
 
 export interface Message {
@@ -51,4 +57,12 @@ export interface MaintenanceTicket {
   status: 'Open' | 'In Progress' | 'Resolved';
   date: string;
   priority: 'High' | 'Medium' | 'Low';
+}
+
+export interface Report {
+  id: string;
+  listingId: string;
+  reportedBy: string;
+  reason: string;
+  timestamp: string;
 }
