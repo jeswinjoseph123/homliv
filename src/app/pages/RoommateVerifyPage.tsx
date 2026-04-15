@@ -57,6 +57,7 @@ export function RoommateVerifyPage() {
             Your account is active. Your listings will show a roommate badge. Full verification usually completes within 2 hours.
           </p>
           <button
+            type="button"
             className="w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-opacity hover:opacity-90 mb-3"
             style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
             onClick={() => navigate('/roommate/list-room')}
@@ -64,6 +65,7 @@ export function RoommateVerifyPage() {
             Set up my listing →
           </button>
           <button
+            type="button"
             className="w-full py-3 text-sm font-medium text-slate-brand hover:text-jet transition-colors"
             onClick={() => {
               setVerified(false);
@@ -132,10 +134,11 @@ export function RoommateVerifyPage() {
             </p>
 
             <div className="mb-4">
-              <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+              <label htmlFor="verify-email" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                 Email Address
               </label>
               <input
+                id="verify-email"
                 type="email"
                 readOnly
                 value="jane.doe@example.com"
@@ -145,6 +148,7 @@ export function RoommateVerifyPage() {
 
             {!codeSent1 ? (
               <button
+                type="button"
                 className="w-full py-3 rounded-xl text-white font-semibold text-sm transition-opacity hover:opacity-90 mb-4"
                 style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
                 onClick={() => setCodeSent1(true)}
@@ -153,10 +157,11 @@ export function RoommateVerifyPage() {
               </button>
             ) : (
               <div className="mb-4">
-                <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                <label htmlFor="otp-code1" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                   6-Digit Code
                 </label>
                 <input
+                  id="otp-code1"
                   type="text"
                   maxLength={6}
                   placeholder="••••••"
@@ -173,6 +178,7 @@ export function RoommateVerifyPage() {
 
             {codeSent1 && (
               <button
+                type="button"
                 className="w-full py-3 rounded-xl text-white font-semibold text-sm transition-opacity hover:opacity-90 disabled:opacity-40"
                 style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
                 disabled={code1.length < 6}
@@ -194,7 +200,7 @@ export function RoommateVerifyPage() {
             </p>
 
             <div className="mb-4">
-              <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+              <label htmlFor="verify-phone" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                 Phone Number
               </label>
               <div className="flex">
@@ -202,6 +208,7 @@ export function RoommateVerifyPage() {
                   +353
                 </span>
                 <input
+                  id="verify-phone"
                   type="tel"
                   placeholder="00 000 0000"
                   className="w-full bg-[#f0f1f3] rounded-r-xl px-4 py-3 text-sm text-jet outline-none focus:bg-[#e8e9ec] transition-colors"
@@ -213,6 +220,7 @@ export function RoommateVerifyPage() {
 
             {!codeSent2 ? (
               <button
+                type="button"
                 className="w-full py-3 rounded-xl text-white font-semibold text-sm transition-opacity hover:opacity-90 mb-4"
                 style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
                 onClick={() => setCodeSent2(true)}
@@ -221,10 +229,11 @@ export function RoommateVerifyPage() {
               </button>
             ) : (
               <div className="mb-4">
-                <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                <label htmlFor="otp-code2" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                   6-Digit Code
                 </label>
                 <input
+                  id="otp-code2"
                   type="text"
                   maxLength={6}
                   placeholder="••••••"
@@ -248,6 +257,7 @@ export function RoommateVerifyPage() {
 
             <div className="flex gap-2">
               <button
+                type="button"
                 className="flex-1 py-3 rounded-xl text-sm font-medium text-slate-brand border border-ghost/40 hover:bg-surface-low transition-colors"
                 onClick={() => setStep(1)}
               >
@@ -255,6 +265,7 @@ export function RoommateVerifyPage() {
               </button>
               {codeSent2 && (
                 <button
+                  type="button"
                   className="flex-1 py-3 rounded-xl text-white font-semibold text-sm transition-opacity hover:opacity-90 disabled:opacity-40"
                   style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
                   disabled={code2.length < 6}

@@ -25,8 +25,8 @@ export const router = createBrowserRouter([
   { path: '/roommate',          Component: RoommateSignupPage },
   { path: '/roommate/verify',   Component: RoommateVerifyPage },
   // Phase 2 stubs — redirect to /roommate until dashboard is built
-  { path: '/roommate/dashboard', Component: () => <Navigate to="/roommate" replace /> },
-  { path: '/roommate/listings',  Component: () => <Navigate to="/roommate" replace /> },
-  { path: '/roommate/list-room', Component: () => <Navigate to="/roommate" replace /> },
+  { path: '/roommate/dashboard', element: <Navigate to="/roommate" replace /> },
+  { path: '/roommate/listings',  element: <Navigate to="/roommate" replace /> },
+  { path: '/roommate/list-room', element: <Navigate to="/roommate" replace /> },
   { path: '*',                  Component: HomePage },
 ]);

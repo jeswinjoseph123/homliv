@@ -135,10 +135,11 @@ export function RoommateSignupPage() {
             {activeTab === 'signin' && (
               <>
                 <div className="mb-4">
-                  <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                  <label htmlFor="signin-email" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                     Email Address
                   </label>
                   <input
+                    id="signin-email"
                     type="email"
                     placeholder="john@example.com"
                     className="w-full px-4 py-3 border border-ghost/40 rounded-lg text-sm text-jet outline-none focus:border-coral transition-colors bg-white"
@@ -148,7 +149,7 @@ export function RoommateSignupPage() {
                 </div>
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-bold tracking-[0.06em] uppercase text-slate-brand">
+                    <label htmlFor="signin-password" className="text-xs font-bold tracking-[0.06em] uppercase text-slate-brand">
                       Password
                     </label>
                     <button type="button" className="text-xs font-bold tracking-[0.05em] uppercase text-coral hover:text-coral-dark transition-colors">
@@ -156,6 +157,7 @@ export function RoommateSignupPage() {
                     </button>
                   </div>
                   <input
+                    id="signin-password"
                     type="password"
                     placeholder="••••••••"
                     className="w-full px-4 py-3 border border-ghost/40 rounded-lg text-sm text-jet outline-none focus:border-coral transition-colors bg-white"
@@ -169,10 +171,11 @@ export function RoommateSignupPage() {
             {activeTab === 'create' && (
               <>
                 <div className="mb-4">
-                  <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                  <label htmlFor="signup-name" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                     Full Name
                   </label>
                   <input
+                    id="signup-name"
                     type="text"
                     placeholder="Jane Doe"
                     className="w-full px-4 py-3 border border-ghost/40 rounded-lg text-sm text-jet outline-none focus:border-coral transition-colors bg-white"
@@ -182,10 +185,11 @@ export function RoommateSignupPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div>
-                    <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                    <label htmlFor="signup-email" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                       Email
                     </label>
                     <input
+                      id="signup-email"
                       type="email"
                       placeholder="jane@example.com"
                       className="w-full px-4 py-3 border border-ghost/40 rounded-lg text-sm text-jet outline-none focus:border-coral transition-colors bg-white"
@@ -194,7 +198,7 @@ export function RoommateSignupPage() {
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                    <label htmlFor="signup-phone" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                       Phone
                     </label>
                     <div className="flex">
@@ -202,6 +206,7 @@ export function RoommateSignupPage() {
                         +353
                       </span>
                       <input
+                        id="signup-phone"
                         type="tel"
                         placeholder="00 000 0000"
                         className="w-full px-4 py-3 border border-ghost/40 rounded-r-lg text-sm text-jet outline-none focus:border-coral transition-colors bg-white"
@@ -212,10 +217,11 @@ export function RoommateSignupPage() {
                   </div>
                 </div>
                 <div className="mb-4">
-                  <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                  <label htmlFor="signup-password" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                     Password
                   </label>
                   <input
+                    id="signup-password"
                     type="password"
                     placeholder="••••••••"
                     className="w-full px-4 py-3 border border-ghost/40 rounded-lg text-sm text-jet outline-none focus:border-coral transition-colors bg-white"
