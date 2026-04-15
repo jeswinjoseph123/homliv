@@ -16,7 +16,7 @@ export function TenantLoginPage() {
   const handleSubmit = () => navigate('/tenant-dashboard');
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className="min-h-screen flex flex-col lg:flex-row">
 
       {/* ── Left panel ── */}
       <div
@@ -130,7 +130,7 @@ export function TenantLoginPage() {
                 </label>
                 <input
                   type="text"
-                  className="w-full border-0 border-b border-ghost/30 rounded-none bg-transparent px-0 py-2 text-sm text-jet outline-none focus:border-coral transition-colors placeholder:text-slate-brand/40"
+                  className="w-full border border-ghost/40 rounded-lg px-4 py-3 text-sm text-jet outline-none focus:border-coral transition-colors bg-white placeholder:text-slate-brand/40"
                   placeholder="Your name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -144,7 +144,7 @@ export function TenantLoginPage() {
               </label>
               <input
                 type="email"
-                className="w-full border-0 border-b border-ghost/30 rounded-none bg-transparent px-0 py-2 text-sm text-jet outline-none focus:border-coral transition-colors placeholder:text-slate-brand/40"
+                className="w-full border border-ghost/40 rounded-lg px-4 py-3 text-sm text-jet outline-none focus:border-coral transition-colors bg-white placeholder:text-slate-brand/40"
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -172,7 +172,7 @@ export function TenantLoginPage() {
               </div>
               <input
                 type={showPassword ? 'text' : 'password'}
-                className="w-full border-0 border-b border-ghost/30 rounded-none bg-transparent px-0 py-2 text-sm text-jet outline-none focus:border-coral transition-colors placeholder:text-slate-brand/40"
+                className="w-full border border-ghost/40 rounded-lg px-4 py-3 text-sm text-jet outline-none focus:border-coral transition-colors bg-white placeholder:text-slate-brand/40"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

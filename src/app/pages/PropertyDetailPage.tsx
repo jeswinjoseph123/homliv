@@ -74,7 +74,7 @@ export function PropertyDetailPage() {
           {/* Left column */}
           <div className="flex-1 min-w-0">
             {/* Gallery */}
-            <div className="grid grid-cols-[2fr_1fr] gap-2 h-[380px] md:h-[480px] rounded-xl overflow-hidden">
+            <div className="grid grid-cols-[2fr_1fr] gap-2 h-[380px] md:h-[480px] rounded-xl overflow-hidden" style={{ boxShadow: '0 8px 32px rgba(23,27,43,0.12)' }}>
               <div className="relative">
                 <img
                   src={property.images[activeImage] || property.images[0]}
@@ -82,7 +82,7 @@ export function PropertyDetailPage() {
                   className="w-full h-full object-cover"
                 />
                 {property.isRPZ && (
-                  <div className="absolute top-4 left-4 px-2 py-0.5 text-xs font-bold tracking-widest uppercase text-white rounded bg-red-600">
+                  <div className="absolute top-4 left-4 px-2 py-0.5 text-xs font-bold tracking-widest uppercase text-white rounded bg-coral">
                     RPZ Area
                   </div>
                 )}
@@ -120,17 +120,17 @@ export function PropertyDetailPage() {
 
             {/* The Space */}
             <div className="mt-8">
-              <h2 className="text-[1.5rem] font-bold mb-3 text-jet" style={{ letterSpacing: '-0.01em' }}>
+              <h2 className="text-[1.5rem] font-bold mb-3 text-jet" style={{ letterSpacing: '-0.02em' }}>
                 The Space
               </h2>
-              <p className="text-base leading-relaxed text-slate-brand" style={{ lineHeight: 1.7 }}>
+              <p className="text-base leading-relaxed text-ink" style={{ lineHeight: 1.7 }}>
                 {property.description}
               </p>
             </div>
 
             {/* Amenities */}
             <div className="mt-8">
-              <h2 className="text-[1.5rem] font-bold mb-4 text-jet" style={{ letterSpacing: '-0.01em' }}>
+              <h2 className="text-[1.5rem] font-bold mb-4 text-jet" style={{ letterSpacing: '-0.02em' }}>
                 Amenities
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -138,6 +138,7 @@ export function PropertyDetailPage() {
                   <div
                     key={amenity}
                     className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-ghost/20 text-sm text-jet"
+                  style={{ boxShadow: '0 1px 4px rgba(23,27,43,0.05)' }}
                   >
                     <span className="text-coral">
                       {AMENITY_ICONS[amenity] || <CheckCircle size={16} />}
@@ -150,7 +151,7 @@ export function PropertyDetailPage() {
 
             {/* Location */}
             <div className="mt-8">
-              <h2 className="text-[1.5rem] font-bold mb-4 text-jet" style={{ letterSpacing: '-0.01em' }}>
+              <h2 className="text-[1.5rem] font-bold mb-4 text-jet" style={{ letterSpacing: '-0.02em' }}>
                 Location
               </h2>
 

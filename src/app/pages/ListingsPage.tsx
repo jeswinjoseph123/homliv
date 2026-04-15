@@ -249,8 +249,8 @@ export function ListingsPage() {
         <div className="flex gap-8">
           {/* Sidebar */}
           <aside
-            className="hidden lg:block shrink-0 p-6 self-start sticky top-20"
-            style={{ width: 240 }}
+            className="hidden lg:block shrink-0 p-6 self-start sticky top-20 bg-white rounded-2xl"
+            style={{ width: 240, boxShadow: '0 4px 20px rgba(23,27,43,0.08), 0 1px 4px rgba(23,27,43,0.04)' }}
           >
             <SidebarContent {...sidebarProps} />
           </aside>
@@ -305,7 +305,7 @@ export function ListingsPage() {
       {showFilterModal && (
         <div className="fixed inset-0 z-50 flex items-end">
           <div className="absolute inset-0 bg-black/40" onClick={() => setShowFilterModal(false)} />
-          <div className="relative w-full bg-white rounded-t-2xl p-6 max-h-[80vh] overflow-y-auto">
+          <div className="relative w-full bg-white rounded-t-2xl p-6 max-h-[80vh] overflow-y-auto" style={{ boxShadow: '0 -8px 32px rgba(23,27,43,0.18)' }}>
             <div className="flex items-center justify-between mb-4">
               <span className="font-bold text-base text-jet">Filters</span>
               <button onClick={() => setShowFilterModal(false)}>
@@ -319,7 +319,8 @@ export function ListingsPage() {
 
       {/* Concierge Chat Button */}
       <button
-        className="fixed bottom-6 right-6 flex items-center gap-2 px-4 py-3 rounded-full text-white text-sm font-semibold z-40 bg-coral shadow-[0_4px_20px_rgba(239,131,84,0.4)]"
+        className="fixed bottom-6 right-6 flex items-center gap-2 px-4 py-3 rounded-full text-white text-sm font-semibold z-40 transition-opacity hover:opacity-90"
+        style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)', boxShadow: '0 4px 20px rgba(180,80,40,0.40)' }}
         onClick={() => setChatOpen(!chatOpen)}
       >
         <MessageCircle size={16} />
@@ -330,7 +331,7 @@ export function ListingsPage() {
         <div
           className="fixed bottom-20 right-6 w-72 bg-white rounded-xl z-40 overflow-hidden shadow-[0_8px_40px_rgba(23,27,43,0.15)]"
         >
-          <div className="px-4 py-3 flex items-center justify-between bg-coral">
+          <div className="px-4 py-3 flex items-center justify-between" style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}>
             <span className="text-white font-semibold text-sm">Concierge Chat</span>
             <button onClick={() => setChatOpen(false)}>
               <X size={16} className="text-white" />
