@@ -77,7 +77,7 @@ export function ListRoomPage() {
       availableFrom: form.availableFrom,
       availableUntil: form.listingType === 'temporary' ? form.availableUntil : null,
     };
-    mockProperties.push(newListing);
+    (mockProperties as Property[]).push(newListing);
     toast.success('Room listed successfully!');
     navigate('/roommate/dashboard');
   }

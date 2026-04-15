@@ -3,6 +3,10 @@ import { Plus, MapPin, AlertTriangle, RefreshCw, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import type { Property } from '../../../types';
 
+const MODULE_NOW = new Date();
+const MIN_EXTEND_DATE = new Date(MODULE_NOW.getTime() + 86400000).toISOString().split('T')[0];
+const MAX_EXTEND_DATE = new Date(MODULE_NOW.getTime() + 365 * 86400000).toISOString().split('T')[0];
+
 interface MyListingsTabProps {
   roommateListings: Property[];
   onListingsChange: (updated: Property[]) => void;
@@ -15,7 +19,7 @@ export function MyListingsTab({ roommateListings, onListingsChange }: MyListings
   const [savedId, setSavedId] = useState<string | null>(null);
 
   const atLimit = roommateListings.length >= 2;
-  const now = new Date();
+  const now = MODULE_NOW;
 
   function isExpired(listing: Property) {
     return listing.listingType === 'temporary' && listing.availableUntil
@@ -193,8 +197,8 @@ export function MyListingsTab({ roommateListings, onListingsChange }: MyListings
                   <input
                     type="date"
                     className="w-full bg-[#f0f1f3] rounded-xl px-4 py-3 text-sm text-jet outline-none focus:bg-[#e8e9ec] transition-colors mb-3"
-                    min={new Date(Date.now() + 86400000).toISOString().split('T')[0]}
-                    max={new Date(Date.now() + 365 * 86400000).toISOString().split('T')[0]}
+                    min={MIN_EXTEND_DATE}
+                    max={MAX_EXTEND_DATE}
                     value={newDate}
                     onChange={(e) => setNewDate(e.target.value)}
                   />

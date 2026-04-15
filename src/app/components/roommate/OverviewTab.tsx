@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { type Tab } from './types';
 
 const BANNER_KEY = 'homliv_roommate_banner_dismissed';
+const NOW_MS = Date.now();
 
 interface OverviewTabProps {
   onNav: (tab: Tab) => void;
@@ -23,7 +24,7 @@ export function OverviewTab({ onNav, hasActiveListing, expiryDate }: OverviewTab
   }
 
   const daysUntilExpiry = expiryDate
-    ? Math.ceil((new Date(expiryDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    ? Math.ceil((new Date(expiryDate).getTime() - NOW_MS) / (1000 * 60 * 60 * 24))
     : null;
 
   const expiryLabel = expiryDate
