@@ -36,26 +36,29 @@ export function RoommateDashboard() {
           hasActiveListing={hasActiveListing}
         />
 
-        <main className="flex-1 overflow-y-auto">
-          <div
-            className={`max-w-[1100px] mx-auto w-full p-4 sm:p-6 ${activeTab === 'messages' ? 'flex overflow-hidden h-full' : ''}`}
-          >
-            {activeTab === 'overview'  && (
-              <OverviewTab
-                onNav={setActiveTab}
-                hasActiveListing={hasActiveListing}
-                expiryDate={expiryDate}
-              />
-            )}
-            {activeTab === 'listings'  && (
-              <MyListingsTab
-                roommateListings={listings}
-                onListingsChange={setListings}
-              />
-            )}
-            {activeTab === 'messages'  && <MessagesTab />}
-            {activeTab === 'settings'  && <SettingsTab />}
-          </div>
+        <main className="flex-1 overflow-y-auto" style={{ viewTransitionName: 'main-content' }}>
+          {activeTab === 'messages' ? (
+            <div className="flex overflow-hidden h-full">
+              <MessagesTab />
+            </div>
+          ) : (
+            <div className="max-w-[1100px] mx-auto w-full p-4 sm:p-6">
+              {activeTab === 'overview'  && (
+                <OverviewTab
+                  onNav={setActiveTab}
+                  hasActiveListing={hasActiveListing}
+                  expiryDate={expiryDate}
+                />
+              )}
+              {activeTab === 'listings'  && (
+                <MyListingsTab
+                  roommateListings={listings}
+                  onListingsChange={setListings}
+                />
+              )}
+              {activeTab === 'settings'  && <SettingsTab />}
+            </div>
+          )}
         </main>
       </div>
     </div>

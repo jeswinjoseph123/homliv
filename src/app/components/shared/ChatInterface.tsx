@@ -206,7 +206,7 @@ function DateSeparator({ label }: { label: string }) {
 /* ════════════════════════════════════════════════════════
    ChatInterface — embeddable, no outer layout
 ════════════════════════════════════════════════════════ */
-export function ChatInterface() {
+export function ChatInterface({ perspective = 'tenant' }: { perspective?: 'tenant' | 'landlord' }) {
   const [conversations, setConversations] = useState<Conversation[]>(mockConversations);
   const [activeConv, setActiveConv] = useState<Conversation>(mockConversations[0]);
   const [inputText, setInputText] = useState('');
@@ -226,7 +226,7 @@ export function ChatInterface() {
     if (!inputText.trim()) return;
     const newMsg: Message = {
       id: Date.now().toString(),
-      sender: 'tenant',
+      sender: perspective,
       text: inputText.trim(),
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       read: true,
@@ -243,8 +243,8 @@ export function ChatInterface() {
     setTimeout(() => {
       const reply: Message = {
         id: (Date.now() + 1).toString(),
-        sender: 'landlord',
-        text: 'Thanks for reaching out! Happy to help.',
+        sender: perspective === 'landlord' ? 'tenant' : 'landlord',
+        text: perspective === 'landlord' ? 'Thanks, looking forward to it!' : 'Thanks for reaching out! Happy to help.',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         read: false,
       };
@@ -359,7 +359,7 @@ export function ChatInterface() {
             <div className="flex items-center gap-2 flex-wrap">
               <p className="font-semibold text-sm text-jet">{activeConv.tenantName}</p>
               <span className="flex items-center gap-1 text-[0.6rem] font-bold uppercase tracking-[0.05em] px-2 py-0.5 rounded-full bg-green-50 text-green-600">
-                <BadgeCheck size={10} /> Verified Landlord
+                <BadgeCheck size={10} /> {perspective === 'landlord' ? 'Verified Tenant' : 'Verified Landlord'}
               </span>
             </div>
             <p className="text-xs text-slate-brand truncate">{activeConv.property}</p>
@@ -391,7 +391,7 @@ export function ChatInterface() {
             <>
               <DateSeparator label="Yesterday" />
               {yesterdayMsgs.map((msg) => {
-                const isSelf = msg.sender === 'tenant';
+                const isSelf = msg.sender === perspective;
                 return (
                   <div key={msg.id} className={`flex ${isSelf ? 'justify-end' : 'justify-start'} mb-1`}>
                     <div
@@ -420,7 +420,7 @@ export function ChatInterface() {
             <>
               <DateSeparator label="Today" />
               {todayMsgs.map((msg) => {
-                const isSelf = msg.sender === 'tenant';
+                const isSelf = msg.sender === perspective;
                 return (
                   <div key={msg.id} className={`flex ${isSelf ? 'justify-end' : 'justify-start'} mb-1`}>
                     <div

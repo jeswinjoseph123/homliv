@@ -339,7 +339,7 @@ const { isVerified, setVerified } = useVerificationStore();
 
 ### Route: `/landlord/verify` → `LandlordVerifyPage`
 
-4-column layout: `LandlordSidebar` → progress sidebar (`w-44`) → form (`flex-1`) → trust panel (`w-52`).
+Layout: `LandlordSidebar` (nav) → steps list (w-44, no bg card, blends into surface-low) → form (flex-1, scrollable) → trust panel (w-52). Steps list and form are wrapped together in a `viewTransitionName: 'main-content'` div so they slide as one unit.
 
 Steps:
 1. **Personal Info** — Full name, phone (+353), DOB, PPS number
@@ -523,18 +523,112 @@ export interface MaintenanceTicket { id: string; tenantName: string; property: s
 ## Routing Map
 
 ```
-/                     → HomePage
-/listings             → ListingsPage
-/property/:id         → PropertyDetailPage
-/login                → TenantLoginPage
-/landlord             → LandlordSignupPage
-/dashboard            → LandlordDashboard
-/tenant-dashboard     → TenantDashboard
-/chat/:tenancyId      → ChatPage
-/landlord/verify      → LandlordVerifyPage
+/                        → HomePage
+/listings                → ListingsPage
+/property/:id            → PropertyDetailPage
+/login                   → TenantLoginPage
+/landlord                → LandlordSignupPage
+/dashboard               → LandlordDashboard
+/tenant-dashboard        → TenantDashboard
+/chat/:tenancyId         → ChatPage
+/landlord/verify         → LandlordVerifyPage
+/landlord/list-property  → LandlordListPropertyPage
+/roommate/dashboard      → RoommateDashboard
+/roommate/list-room      → ListRoomPage
 ```
 
 All routes are client-side. No auth guard needed — mock navigation only.
+
+---
+
+## Page Transitions (View Transitions API)
+
+All navigations use `viewTransition: true` in `navigate()`. Only the `main-content` named region animates — Navbar and nav sidebar stay static.
+
+### CSS (theme.css)
+
+```css
+/* Forward: old exits left, new enters from right (iOS push) */
+::view-transition-old(main-content) { animation: 380ms ... vt-slide-to-left; }
+::view-transition-new(main-content) { animation: 380ms ... vt-slide-from-right; }
+
+/* Back: old exits right, new enters from left (iOS pop) */
+html[data-nav-back]::view-transition-old(main-content) { animation: 380ms ... vt-slide-to-right; }
+html[data-nav-back]::view-transition-new(main-content) { animation: 380ms ... vt-slide-from-left; }
+```
+
+### navBack helper
+
+Any navigation that feels like "going back" (Cancel, Do it later, Back to Properties) must use `navBack()`:
+
+```ts
+function navBack(navigate, to, state?) {
+  document.documentElement.dataset.navBack = '';
+  navigate(to, { state, viewTransition: true });
+  setTimeout(() => delete document.documentElement.dataset.navBack, 500);
+}
+```
+
+Defined at module level in each wizard/listing page. **Never call `navigate()` directly for back navigations.**
+
+### viewTransitionName placement
+
+- **Dashboard pages** (`LandlordDashboard`, `RoommateDashboard`): on `<main>`
+- **Wizard pages** (`LandlordListPropertyPage`, `ListRoomPage`, `LandlordVerifyPage`): on the wrapper `<div>` that contains the steps sidebar + form + tips (everything except the nav sidebar)
+
+---
+
+## Wizard Page Layout Pattern
+
+Used by: `LandlordListPropertyPage`, `ListRoomPage`, `LandlordVerifyPage`
+
+```
+h-screen flex flex-col overflow-hidden bg-surface-low
+  Navbar
+  flex flex-1 overflow-hidden min-h-0
+    <NavSidebar>   ← outside viewTransitionName, stays static
+    <div flex flex-1 overflow-hidden style={{ viewTransitionName: 'main-content' }}>
+      Steps list (w-44, hidden lg:flex, NO bg card — blends into surface-low)
+      <main flex-1 overflow-hidden>
+        flex justify-center items-start px-5 py-6 overflow-y-auto h-full
+          w-full max-w-lg
+            Step label + progress bar (above card)
+            Form card (bg-white rounded-2xl overflow-hidden — sizes to content)
+              <div key={step} — directional slide animation>
+                {step content}
+              </div>
+              Buttons footer (px-6 pb-4 pt-3, border-top ghost/15)
+            ← Back to [X] (mt-4, text-left, navBack)
+      </main>
+      Tips/Trust panel (w-52, bg-surface-low)
+    </div>
+```
+
+### Steps list (inactive circle uses bg-white/60, NOT bg-surface-low)
+
+```tsx
+<div className="hidden lg:flex flex-col w-44 shrink-0 sticky top-0 h-screen pt-8 pb-6 px-3">
+  // inactive: 'bg-white/60 text-slate-brand/50'
+  // active:   'bg-coral/15 text-coral border-2 border-coral'
+  // done:     'bg-coral text-white'
+```
+
+### Directional step content animation
+
+```tsx
+const stepDir = useRef<'forward' | 'back'>('forward');
+
+// Continue: stepDir.current = 'forward'; setStep(s => s + 1)
+// Back:     stepDir.current = 'back';    setStep(s => s - 1)
+
+<div
+  key={step}
+  className="p-6 pb-2"
+  style={{ animation: `420ms cubic-bezier(0.25,1,0.5,1) ${stepDir.current === 'forward' ? 'step-from-right' : 'step-from-left'} both` }}
+>
+```
+
+Keyframes `step-from-right` and `step-from-left` are in `theme.css`.
 
 ---
 

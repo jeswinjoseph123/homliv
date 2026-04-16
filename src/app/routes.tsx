@@ -8,6 +8,7 @@ import { ChatPage } from './pages/ChatPage';
 import { LandlordDashboard } from './pages/LandlordDashboard';
 import { TenantDashboard } from './pages/TenantDashboard';
 import { LandlordVerifyPage } from './pages/LandlordVerifyPage';
+import { LandlordListPropertyPage } from './pages/LandlordListPropertyPage';
 import { RoommateSignupPage } from './pages/RoommateSignupPage';
 import { RoommateVerifyPage } from './pages/RoommateVerifyPage';
 import { RoommateDashboard } from './pages/RoommateDashboard';
@@ -22,7 +23,8 @@ export const router = createBrowserRouter([
   { path: '/dashboard',         Component: LandlordDashboard },
   { path: '/tenant-dashboard',  Component: TenantDashboard },
   { path: '/chat/:tenancyId',   Component: ChatPage },
-  { path: '/landlord/verify',   Component: LandlordVerifyPage },
+  { path: '/landlord/verify',         Component: LandlordVerifyPage },
+  { path: '/landlord/list-property',  Component: LandlordListPropertyPage },
   // Roommate routes
   { path: '/roommate',          Component: RoommateSignupPage },
   { path: '/roommate/verify',   Component: RoommateVerifyPage },
