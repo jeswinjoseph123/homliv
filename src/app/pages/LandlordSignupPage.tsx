@@ -240,8 +240,16 @@ export function LandlordSignupPage() {
               </>
             )}
 
-            {/* Prominent roommate CTA — shown before submit so it's above the fold */}
-            <div className="rounded-xl p-4 mb-4" style={{ background: '#fef3e2' }}>
+            <button
+              type="submit"
+              className="w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-opacity hover:opacity-90"
+              style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
+            >
+              {activeTab === 'signin' ? 'Sign In →' : 'Create Landlord Account →'}
+            </button>
+
+            {/* Roommate CTA */}
+            <div className="rounded-xl p-4 mt-4" style={{ background: '#fef3e2' }}>
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: '#fde8c8' }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9c5a00" strokeWidth="2">
@@ -262,14 +270,6 @@ export function LandlordSignupPage() {
                 Roommate Portal →
               </Link>
             </div>
-
-            <button
-              type="submit"
-              className="w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-opacity hover:opacity-90"
-              style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
-            >
-              {activeTab === 'signin' ? 'Sign In →' : 'Create Landlord Account →'}
-            </button>
 
             <div className="my-5 flex items-center gap-3">
               <div className="flex-1 h-px bg-ghost/30" />
