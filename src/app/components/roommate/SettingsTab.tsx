@@ -26,7 +26,7 @@ export function SettingsTab() {
         </div>
         <div className="flex flex-col gap-3">
           {SETTINGS_ITEMS.map((item) => (
-            <div key={item} className="flex items-center justify-between py-3" style={{ borderBottom: '1px solid rgba(220,193,183,0.15)' }}>
+            <div key={item} className="flex items-center justify-between py-3 hover:bg-surface-low rounded-lg px-2 transition-colors">
               <span className="text-sm font-medium text-jet">{item}</span>
               <ChevronRight size={16} className="text-slate-brand" />
             </div>

@@ -505,7 +505,7 @@ export function HomePage() {
       {/* Back to top */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg transition-all duration-300"
+        className="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all duration-300"
         style={{
           background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)',
           boxShadow: '0 4px 20px rgba(180,80,40,0.45)',

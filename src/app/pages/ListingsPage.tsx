@@ -183,7 +183,7 @@ export function ListingsPage() {
 
   // Sort
   const sorted = [...activeListings].sort((a, b) =>
-    sortBy === 'price' ? a.price - b.price : Number(b.id) - Number(a.id)
+    sortBy === 'price' ? a.price - b.price : (Number(b.id) || 0) - (Number(a.id) || 0)
   );
 
   const ITEMS_PER_PAGE = 10;

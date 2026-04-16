@@ -230,10 +230,11 @@ export function RoommateSignupPage() {
                   />
                 </div>
                 <div className="mb-6">
-                  <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                  <label htmlFor="signup-confirm-password" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                     Confirm Password
                   </label>
                   <input
+                    id="signup-confirm-password"
                     type="password"
                     placeholder="••••••••"
                     className="w-full px-4 py-3 border border-ghost/40 rounded-lg text-sm text-jet outline-none focus:border-coral transition-colors bg-white"
