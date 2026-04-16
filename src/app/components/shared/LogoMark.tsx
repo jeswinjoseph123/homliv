@@ -8,19 +8,22 @@ export function LogoMark({ size = 24, className = '' }: LogoMarkProps) {
     <svg
       width={size}
       height={size}
-      viewBox="0 0 100 90"
+      viewBox="0 0 200 180"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      {/* Roof chevron — wide, extends beyond H columns */}
-      <path d="M50 6 L98 44 L88 44 L50 18 L12 44 L2 44 Z" />
+      {/* Roof — wide chevron band, extends beyond H columns */}
+      <path d="M100 5 L200 72 L182 72 L100 23 L18 72 L0 72 Z" />
+
       {/* H — left pillar */}
-      <rect x="17" y="41" width="20" height="49" />
-      {/* H — right pillar */}
-      <rect x="63" y="41" width="20" height="49" />
-      {/* H — crossbar: inner edge to inner edge, upper third of pillars */}
-      <rect x="37" y="53" width="26" height="14" />
+      <rect x="28" y="68" width="36" height="112" />
+
+      {/* H — right pillar with notch on inner-left face at crossbar height */}
+      <path d="M136 68 L172 68 L172 180 L136 180 L136 126 L150 126 L150 105 L136 105 Z" />
+
+      {/* H — crossbar: right face of left pillar → notch depth of right pillar */}
+      <rect x="64" y="105" width="86" height="21" />
     </svg>
   );
 }
