@@ -174,8 +174,15 @@ export function ListingsPage() {
     setSelectedLocation('Dublin');
   };
 
+  const activeListings = mockProperties.filter((l) => {
+    if (l.listingType === 'temporary' && l.availableUntil) {
+      return new Date(l.availableUntil) > new Date();
+    }
+    return true;
+  });
+
   // Sort
-  const sorted = [...mockProperties].sort((a, b) =>
+  const sorted = [...activeListings].sort((a, b) =>
     sortBy === 'price' ? a.price - b.price : Number(b.id) - Number(a.id)
   );
 

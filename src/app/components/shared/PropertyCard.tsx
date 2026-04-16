@@ -27,7 +27,7 @@ export function PropertyCard({ property, onWishlistToggle, isWishlisted = false 
           className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
         />
 
-        {/* Type + RPZ badges top-left */}
+        {/* Type + RPZ + Roommate badges top-left */}
         <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
           <div className="px-2 py-1 rounded text-xs font-bold tracking-[0.05em] uppercase text-white bg-jet/85">
             {property.type}
@@ -37,7 +37,25 @@ export function PropertyCard({ property, onWishlistToggle, isWishlisted = false 
               RPZ AREA
             </div>
           )}
+          {property.postedBy === 'roommate' && (
+            <div
+              className="px-2 py-0.5 rounded text-[10px] font-bold tracking-widest uppercase"
+              style={{ background: '#fef3e2', color: '#9c5a00' }}
+            >
+              Roommate listing
+            </div>
+          )}
         </div>
+
+        {/* Temporary listing badge — bottom-left of image */}
+        {property.listingType === 'temporary' && property.availableUntil && (
+          <div
+            className="absolute bottom-2.5 left-2.5 px-2 py-0.5 rounded text-[10px] font-bold"
+            style={{ background: '#e8edf4', color: '#2c4a7c' }}
+          >
+            Until {new Date(property.availableUntil).toLocaleDateString('en-IE', { day: 'numeric', month: 'short' })}
+          </div>
+        )}
 
         {/* Heart toggle top-right */}
         <button
