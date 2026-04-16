@@ -365,15 +365,17 @@ export function ChatInterface() {
             <p className="text-xs text-slate-brand truncate">{activeConv.property}</p>
           </div>
           <div className="flex items-center gap-1 shrink-0">
-            <button
-              type="button"
-              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors hover:bg-red-50"
-              style={{ color: '#b91c1c' }}
-              onClick={() => { setReportListingId(activeConv.id); setShowReport(true); }}
-            >
-              <Flag size={12} />
-              Report user
-            </button>
+            {activeConv.senderRole === 'roommate' && (
+              <button
+                type="button"
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors hover:bg-red-50"
+                style={{ color: '#b91c1c' }}
+                onClick={() => { setReportListingId(activeConv.id); setShowReport(true); }}
+              >
+                <Flag size={12} />
+                Report user
+              </button>
+            )}
             <button type="button" className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-brand hover:bg-surface-low transition-colors">
               <Phone size={15} />
             </button>
