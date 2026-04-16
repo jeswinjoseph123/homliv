@@ -315,7 +315,7 @@ export function ListingsPage() {
           <div className="relative w-full bg-white rounded-t-2xl p-6 max-h-[80vh] overflow-y-auto" style={{ boxShadow: '0 -8px 32px rgba(23,27,43,0.18)' }}>
             <div className="flex items-center justify-between mb-4">
               <span className="font-bold text-base text-jet">Filters</span>
-              <button onClick={() => setShowFilterModal(false)}>
+              <button type="button" onClick={() => setShowFilterModal(false)}>
                 <X size={20} className="text-slate-brand" />
               </button>
             </div>
@@ -340,7 +340,7 @@ export function ListingsPage() {
         >
           <div className="px-4 py-3 flex items-center justify-between" style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}>
             <span className="text-white font-semibold text-sm">Concierge Chat</span>
-            <button onClick={() => setChatOpen(false)}>
+            <button type="button" onClick={() => setChatOpen(false)}>
               <X size={16} className="text-white" />
             </button>
           </div>

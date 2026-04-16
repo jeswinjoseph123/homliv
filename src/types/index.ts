@@ -64,5 +64,6 @@ export interface Report {
   listingId: string;
   reportedBy: string;
   reason: string;
+  details?: string;
   timestamp: string;
 }

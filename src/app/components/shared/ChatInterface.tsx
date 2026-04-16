@@ -251,7 +251,7 @@ export function ChatInterface() {
       setConversations((prev) =>
         prev.map((c) => {
           if (c.id !== activeConv.id) return c;
-          const u = { ...c, messages: [...c.messages, newMsg, reply], lastMessage: reply.text, time: reply.time };
+          const u = { ...c, messages: [...c.messages, reply], lastMessage: reply.text, time: reply.time };
           setActiveConv(u);
           return u;
         })

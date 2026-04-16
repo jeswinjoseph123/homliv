@@ -26,6 +26,7 @@ export function ReportModal({ open, onClose, listingId }: ReportModalProps) {
       listingId,
       reportedBy: 'tenant-mock',
       reason,
+      ...(details.trim() ? { details: details.trim() } : {}),
       timestamp: new Date().toISOString(),
     });
     toast.success('Report submitted. Our team will review this listing.');

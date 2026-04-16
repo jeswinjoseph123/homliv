@@ -1,6 +1,6 @@
 import { MapPin, Heart, Bed, Bath, Maximize2 } from 'lucide-react';
 import { useNavigate } from 'react-router';
-import type { Property } from '../../../types';
+import type { Property } from '@/types';
 
 interface PropertyCardProps {
   property: Property;
@@ -59,6 +59,7 @@ export function PropertyCard({ property, onWishlistToggle, isWishlisted = false 
 
         {/* Heart toggle top-right */}
         <button
+          type="button"
           className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full flex items-center justify-center bg-white/90 hover:bg-white transition-colors"
           onClick={(e) => {
             e.stopPropagation();
@@ -126,7 +127,7 @@ export function PropertyCard({ property, onWishlistToggle, isWishlisted = false 
             </span>
             <span className="text-xs font-medium text-slate-brand ml-1">/mo</span>
           </div>
-          <button className="text-xs font-bold tracking-[0.05em] uppercase text-coral hover:text-coral-dark transition-colors">
+          <button type="button" className="text-xs font-bold tracking-[0.05em] uppercase text-coral hover:text-coral-dark transition-colors">
             View Details →
           </button>
         </div>
