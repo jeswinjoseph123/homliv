@@ -1,6 +1,6 @@
 import { MapPin, Heart, Bed, Bath, Maximize2 } from 'lucide-react';
 import { useNavigate } from 'react-router';
-import type { Property } from '../../../types';
+import type { Property } from '@/types';
 
 interface PropertyCardProps {
   property: Property;
@@ -27,7 +27,7 @@ export function PropertyCard({ property, onWishlistToggle, isWishlisted = false 
           className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
         />
 
-        {/* Type + RPZ badges top-left */}
+        {/* Type + RPZ + Roommate badges top-left */}
         <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
           <div className="px-2 py-1 rounded text-xs font-bold tracking-[0.05em] uppercase text-white bg-jet/85">
             {property.type}
@@ -37,10 +37,29 @@ export function PropertyCard({ property, onWishlistToggle, isWishlisted = false 
               RPZ AREA
             </div>
           )}
+          {property.postedBy === 'roommate' && (
+            <div
+              className="px-2 py-0.5 rounded text-[10px] font-bold tracking-widest uppercase"
+              style={{ background: '#fef3e2', color: '#9c5a00' }}
+            >
+              Roommate listing
+            </div>
+          )}
         </div>
+
+        {/* Temporary listing badge — bottom-left of image */}
+        {property.listingType === 'temporary' && property.availableUntil && (
+          <div
+            className="absolute bottom-2.5 left-2.5 px-2 py-0.5 rounded text-[10px] font-bold"
+            style={{ background: '#e8edf4', color: '#2c4a7c' }}
+          >
+            Until {new Date(property.availableUntil).toLocaleDateString('en-IE', { day: 'numeric', month: 'short' })}
+          </div>
+        )}
 
         {/* Heart toggle top-right */}
         <button
+          type="button"
           className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full flex items-center justify-center bg-white/90 hover:bg-white transition-colors"
           onClick={(e) => {
             e.stopPropagation();
@@ -108,7 +127,7 @@ export function PropertyCard({ property, onWishlistToggle, isWishlisted = false 
             </span>
             <span className="text-xs font-medium text-slate-brand ml-1">/mo</span>
           </div>
-          <button className="text-xs font-bold tracking-[0.05em] uppercase text-coral hover:text-coral-dark transition-colors">
+          <button type="button" className="text-xs font-bold tracking-[0.05em] uppercase text-coral hover:text-coral-dark transition-colors">
             View Details →
           </button>
         </div>

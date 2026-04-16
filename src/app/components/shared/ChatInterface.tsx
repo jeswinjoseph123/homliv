@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import {
   Search, Send, CheckCheck, Calendar as CalendarIcon, Phone, MoreVertical,
-  Paperclip, BadgeCheck, X, ChevronLeft, ChevronRight,
+  Paperclip, BadgeCheck, X, ChevronLeft, ChevronRight, Flag,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { mockConversations } from '../../../data/mockProperties';
+import { mockConversations } from '@/data/mockProperties';
+import { ReportModal } from './ReportModal';
 
 type Message = { id: string; sender: string; text: string; time: string; read: boolean };
 type Conversation = (typeof mockConversations)[0];
@@ -213,6 +214,8 @@ export function ChatInterface() {
   const [showViewingCard, setShowViewingCard] = useState(true);
   const [showSuggestPanel, setShowSuggestPanel] = useState(false);
   const [mobileShowList, setMobileShowList] = useState(true);
+  const [showReport, setShowReport] = useState(false);
+  const [reportListingId, setReportListingId] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -248,7 +251,7 @@ export function ChatInterface() {
       setConversations((prev) =>
         prev.map((c) => {
           if (c.id !== activeConv.id) return c;
-          const u = { ...c, messages: [...c.messages, newMsg, reply], lastMessage: reply.text, time: reply.time };
+          const u = { ...c, messages: [...c.messages, reply], lastMessage: reply.text, time: reply.time };
           setActiveConv(u);
           return u;
         })
@@ -362,10 +365,21 @@ export function ChatInterface() {
             <p className="text-xs text-slate-brand truncate">{activeConv.property}</p>
           </div>
           <div className="flex items-center gap-1 shrink-0">
-            <button className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-brand hover:bg-surface-low transition-colors">
+            {activeConv.senderRole === 'roommate' && (
+              <button
+                type="button"
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors hover:bg-red-50"
+                style={{ color: '#b91c1c' }}
+                onClick={() => { setReportListingId(activeConv.id); setShowReport(true); }}
+              >
+                <Flag size={12} />
+                Report user
+              </button>
+            )}
+            <button type="button" className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-brand hover:bg-surface-low transition-colors">
               <Phone size={15} />
             </button>
-            <button className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-brand hover:bg-surface-low transition-colors">
+            <button type="button" className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-brand hover:bg-surface-low transition-colors">
               <MoreVertical size={15} />
             </button>
           </div>
@@ -451,6 +465,8 @@ export function ChatInterface() {
             />
           </div>
         )}
+
+        <ReportModal open={showReport} onClose={() => setShowReport(false)} listingId={reportListingId} />
 
         {/* Input bar */}
         <div

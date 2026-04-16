@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { BadgeCheck, MessageSquare, Wrench } from 'lucide-react';
+import { Home, MessageSquare, UserCheck } from 'lucide-react';
 import { LogoMark } from '../components/shared/LogoMark';
+import { useRoommateStore } from '../../hooks/useRoommateStore';
 
-const BG_IMAGE = 'https://images.unsplash.com/photo-1696743297474-d674b8e3d82a?w=1200&q=80';
+const BG_IMAGE = 'https://images.unsplash.com/photo-1529408686214-b48b8532f72c?w=1200&q=80';
 
-export function LandlordSignupPage() {
+export function RoommateSignupPage() {
   const navigate = useNavigate();
+  const { setRoommate } = useRoommateStore();
   const [activeTab, setActiveTab] = useState<'signin' | 'create'>('signin');
   const [form, setForm] = useState({
     fullName: '',
@@ -27,7 +29,6 @@ export function LandlordSignupPage() {
         className="relative flex flex-col justify-between p-8 lg:p-12 bg-jet"
         style={{ flex: '0 0 50%', minHeight: '40vh' }}
       >
-        {/* Background image overlay */}
         <div
           className="absolute inset-0"
           style={{
@@ -38,39 +39,36 @@ export function LandlordSignupPage() {
           }}
         />
         <div className="relative z-10 flex flex-col h-full justify-between">
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <LogoMark size={26} className="text-coral" />
             <span className="text-white font-bold text-xl tracking-tight">HomLiv</span>
           </Link>
 
-          {/* Main copy */}
           <div className="my-10 lg:my-auto">
             <h1
               className="text-white font-bold leading-tight mb-8"
               style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)', letterSpacing: '-0.02em' }}
             >
-              List your property.<br />
-              Manage your tenants.<br />
-              All in one place.
+              List your spare room.<br />
+              Find your next housemate.
             </h1>
 
             <div className="flex flex-col gap-5">
               {[
                 {
-                  icon: <BadgeCheck size={18} className="text-coral" />,
-                  title: 'Verified landlord network',
-                  desc: 'Join a community of trusted property owners across the region.',
+                  icon: <Home size={18} className="text-coral" />,
+                  title: 'No ownership required',
+                  desc: 'You just need to be a current tenant with a spare room to fill.',
+                },
+                {
+                  icon: <UserCheck size={18} className="text-coral" />,
+                  title: 'Verified housemate network',
+                  desc: 'Connect with verified tenants looking for shared living.',
                 },
                 {
                   icon: <MessageSquare size={18} className="text-coral" />,
-                  title: 'Integrated chat & viewings',
-                  desc: 'Schedule and communicate directly without leaving the platform.',
-                },
-                {
-                  icon: <Wrench size={18} className="text-coral" />,
-                  title: 'Automated maintenance tracking',
-                  desc: 'Resolution workflows that keep your properties in peak condition.',
+                  title: 'Direct messaging with enquirers',
+                  desc: 'Chat directly with potential housemates without leaving the platform.',
                 },
               ].map((feature) => (
                 <div key={feature.title} className="flex gap-4">
@@ -79,34 +77,30 @@ export function LandlordSignupPage() {
                   </div>
                   <div>
                     <p className="text-white font-semibold text-sm">{feature.title}</p>
-                    <p className="text-sm mt-0.5 text-white/60">
-                      {feature.desc}
-                    </p>
+                    <p className="text-sm mt-0.5 text-white/60">{feature.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Bottom badge */}
           <div className="flex items-center gap-3">
             <div className="w-8 h-px bg-coral" />
-            <p className="text-xs font-bold tracking-[0.05em] uppercase text-white">Premium Landlord Suite</p>
+            <p className="text-xs font-bold tracking-[0.05em] uppercase text-white">Roommate Portal</p>
           </div>
         </div>
       </div>
 
-      {/* Right panel — form */}
+      {/* Right panel */}
       <div className="bg-white flex flex-col justify-center items-center p-8 lg:p-12 lg:flex-1">
         <div className="w-full max-w-md">
-
           <h2 className="font-bold text-[1.75rem] tracking-[-0.02em] text-jet mb-1">
             {activeTab === 'signin' ? 'Welcome back' : 'Create Account'}
           </h2>
           <p className="text-slate-brand text-sm mb-6">
             {activeTab === 'signin'
-              ? 'Sign in to manage your properties.'
-              : 'Start your property management journey today.'}
+              ? 'Sign in to manage your room listing.'
+              : 'Start listing your spare room today.'}
           </p>
 
           {/* Tab switcher */}
@@ -127,19 +121,25 @@ export function LandlordSignupPage() {
             ))}
           </div>
 
-          <form onSubmit={(e) => {
-            e.preventDefault();
-            navigate(activeTab === 'create' ? '/landlord/verify' : '/dashboard');
-          }}>
-
-            {/* ── SIGN IN FORM ── */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (activeTab === 'create') {
+                setRoommate(true);
+                navigate('/roommate/verify');
+              } else {
+                navigate('/roommate/dashboard');
+              }
+            }}
+          >
             {activeTab === 'signin' && (
               <>
                 <div className="mb-4">
-                  <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                  <label htmlFor="signin-email" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                     Email Address
                   </label>
                   <input
+                    id="signin-email"
                     type="email"
                     placeholder="john@example.com"
                     className="w-full px-4 py-3 border border-ghost/40 rounded-lg text-sm text-jet outline-none focus:border-coral transition-colors bg-white"
@@ -149,7 +149,7 @@ export function LandlordSignupPage() {
                 </div>
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-bold tracking-[0.06em] uppercase text-slate-brand">
+                    <label htmlFor="signin-password" className="text-xs font-bold tracking-[0.06em] uppercase text-slate-brand">
                       Password
                     </label>
                     <button type="button" className="text-xs font-bold tracking-[0.05em] uppercase text-coral hover:text-coral-dark transition-colors">
@@ -157,6 +157,7 @@ export function LandlordSignupPage() {
                     </button>
                   </div>
                   <input
+                    id="signin-password"
                     type="password"
                     placeholder="••••••••"
                     className="w-full px-4 py-3 border border-ghost/40 rounded-lg text-sm text-jet outline-none focus:border-coral transition-colors bg-white"
@@ -167,16 +168,16 @@ export function LandlordSignupPage() {
               </>
             )}
 
-            {/* ── CREATE ACCOUNT FORM ── */}
             {activeTab === 'create' && (
               <>
                 <div className="mb-4">
-                  <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                  <label htmlFor="signup-name" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                     Full Name
                   </label>
                   <input
+                    id="signup-name"
                     type="text"
-                    placeholder="John Doe"
+                    placeholder="Jane Doe"
                     className="w-full px-4 py-3 border border-ghost/40 rounded-lg text-sm text-jet outline-none focus:border-coral transition-colors bg-white"
                     value={form.fullName}
                     onChange={(e) => handleChange('fullName', e.target.value)}
@@ -184,19 +185,20 @@ export function LandlordSignupPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div>
-                    <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                    <label htmlFor="signup-email" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                       Email
                     </label>
                     <input
+                      id="signup-email"
                       type="email"
-                      placeholder="john@example.com"
+                      placeholder="jane@example.com"
                       className="w-full px-4 py-3 border border-ghost/40 rounded-lg text-sm text-jet outline-none focus:border-coral transition-colors bg-white"
                       value={form.email}
                       onChange={(e) => handleChange('email', e.target.value)}
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                    <label htmlFor="signup-phone" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                       Phone
                     </label>
                     <div className="flex">
@@ -204,6 +206,7 @@ export function LandlordSignupPage() {
                         +353
                       </span>
                       <input
+                        id="signup-phone"
                         type="tel"
                         placeholder="00 000 0000"
                         className="w-full px-4 py-3 border border-ghost/40 rounded-r-lg text-sm text-jet outline-none focus:border-coral transition-colors bg-white"
@@ -214,10 +217,11 @@ export function LandlordSignupPage() {
                   </div>
                 </div>
                 <div className="mb-4">
-                  <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                  <label htmlFor="signup-password" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                     Password
                   </label>
                   <input
+                    id="signup-password"
                     type="password"
                     placeholder="••••••••"
                     className="w-full px-4 py-3 border border-ghost/40 rounded-lg text-sm text-jet outline-none focus:border-coral transition-colors bg-white"
@@ -226,10 +230,11 @@ export function LandlordSignupPage() {
                   />
                 </div>
                 <div className="mb-6">
-                  <label className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
+                  <label htmlFor="signup-confirm-password" className="text-xs font-bold tracking-[0.06em] uppercase block mb-1.5 text-slate-brand">
                     Confirm Password
                   </label>
                   <input
+                    id="signup-confirm-password"
                     type="password"
                     placeholder="••••••••"
                     className="w-full px-4 py-3 border border-ghost/40 rounded-lg text-sm text-jet outline-none focus:border-coral transition-colors bg-white"
@@ -240,35 +245,12 @@ export function LandlordSignupPage() {
               </>
             )}
 
-            {/* Prominent roommate CTA — shown before submit so it's above the fold */}
-            <div className="rounded-xl p-4 mb-4" style={{ background: '#fef3e2' }}>
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: '#fde8c8' }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9c5a00" strokeWidth="2">
-                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                    <polyline points="9 22 9 12 15 12 15 22"/>
-                  </svg>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold" style={{ color: '#9c5a00' }}>Looking to rent a spare room?</p>
-                  <p className="text-xs mt-0.5" style={{ color: '#b87a20' }}>You don't need to own the property. List as a Roommate instead.</p>
-                </div>
-              </div>
-              <Link
-                to="/roommate"
-                className="mt-3 w-full flex items-center justify-center py-2.5 rounded-lg text-xs font-bold tracking-[0.05em] uppercase text-white transition-opacity hover:opacity-90"
-                style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
-              >
-                Roommate Portal →
-              </Link>
-            </div>
-
             <button
               type="submit"
               className="w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-opacity hover:opacity-90"
               style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
             >
-              {activeTab === 'signin' ? 'Sign In →' : 'Create Landlord Account →'}
+              {activeTab === 'signin' ? 'Sign In →' : 'Create Roommate Account →'}
             </button>
 
             <div className="my-5 flex items-center gap-3">
@@ -293,6 +275,29 @@ export function LandlordSignupPage() {
                 </svg>
                 Apple
               </button>
+            </div>
+
+            {/* Prominent landlord CTA */}
+            <div className="rounded-xl p-4 mb-4" style={{ background: '#fef3e2' }}>
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: '#fde8c8' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9c5a00" strokeWidth="2">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold" style={{ color: '#9c5a00' }}>Are you a property owner?</p>
+                  <p className="text-xs mt-0.5" style={{ color: '#b87a20' }}>List and manage your properties with the full landlord suite.</p>
+                </div>
+              </div>
+              <Link
+                to="/landlord"
+                className="mt-3 w-full flex items-center justify-center py-2.5 rounded-lg text-xs font-bold tracking-[0.05em] uppercase text-white transition-opacity hover:opacity-90"
+                style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
+              >
+                Landlord Portal →
+              </Link>
             </div>
 
             <p className="text-xs text-slate-brand/60 text-center">© 2026 HomLiv. Privacy & Terms.</p>

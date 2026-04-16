@@ -3,11 +3,15 @@ import { useParams, useNavigate } from 'react-router';
 import {
   MapPin, Heart, CheckCircle, Wifi, WashingMachine, Wind,
   Thermometer, DoorOpen, Utensils, Shield, ChevronLeft,
-  BadgeCheck, MessageSquare, Calendar, AlignLeft, ParkingSquare, TreePine
+  BadgeCheck, MessageSquare, Calendar, AlignLeft, ParkingSquare, TreePine,
+  AlertTriangle, Flag
 } from 'lucide-react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { mockProperties } from '../../data/mockProperties';
+import { ReportModal } from '../components/shared/ReportModal';
+
+const PAGE_LOAD_MS = Date.now();
 
 const AMENITY_ICONS: Record<string, React.ReactNode> = {
   'WiFi': <Wifi size={16} />,
@@ -34,7 +38,7 @@ export function PropertyDetailPage() {
   const [wishlisted, setWishlisted] = useState(false);
   const [viewingRequested, setViewingRequested] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
-
+  const [showReport, setShowReport] = useState(false);
   const property = mockProperties.find((p) => p.id === id);
 
   if (!property) {
@@ -220,33 +224,87 @@ export function PropertyDetailPage() {
               {/* Divider */}
               <div className="my-5" style={{ borderTop: '1px solid rgba(220,193,183,0.2)' }} />
 
-              {/* Landlord */}
-              <div className="flex items-center gap-3 mb-4">
-                <img
-                  src={property.landlord.avatar}
-                  alt={property.landlord.name}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-                <div>
-                  <div className="flex items-center gap-1">
-                    <span className="font-semibold text-sm text-jet">
-                      {property.landlord.name}
-                    </span>
-                    {property.landlord.verified && (
-                      <BadgeCheck size={14} className="text-coral" />
-                    )}
-                  </div>
-                  {property.landlord.verified && (
-                    <p className="text-xs text-slate-brand">Verified Premium Host</p>
+              {/* Landlord / Roommate card */}
+              {property.postedBy === 'roommate' ? (
+                <>
+                  {property.listingType === 'temporary' && property.availableFrom && property.availableUntil && (
+                    <div className="rounded-xl p-3 mb-3" style={{ background: '#e8edf4' }}>
+                      <p className="text-xs font-medium" style={{ color: '#2c4a7c' }}>
+                        ⏳ Available {new Date(property.availableFrom).toLocaleDateString('en-IE', { day: 'numeric', month: 'short' })} → {new Date(property.availableUntil).toLocaleDateString('en-IE', { day: 'numeric', month: 'short' })}
+                        {' · '}{Math.ceil((new Date(property.availableUntil).getTime() - PAGE_LOAD_MS) / (1000 * 60 * 60 * 24))} days remaining
+                      </p>
+                    </div>
                   )}
-                </div>
-              </div>
-              <button
-                className="w-full px-6 py-3 rounded-lg border border-ghost/20 text-jet font-medium hover:bg-surface-low transition-colors flex items-center justify-center gap-2"
-              >
-                <MessageSquare size={14} />
-                Chat with Landlord
-              </button>
+                  <div className="rounded-2xl p-4 mb-4" style={{ background: '#fef3e2', border: '1px solid rgba(220,193,183,0.15)' }}>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 font-bold text-sm"
+                           style={{ background: '#fde8c8', color: '#9c5a00' }}>
+                        {property.landlord.name.split(' ').map((n: string) => n[0]).join('')}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-sm text-jet">{property.landlord.name}</p>
+                        <p className="text-xs" style={{ color: '#9c5a00' }}>Roommate</p>
+                        <div className="flex items-center gap-1 mt-0.5">
+                          <AlertTriangle size={10} style={{ color: '#9c5a00' }} />
+                          <span className="text-[0.65rem] font-bold" style={{ color: '#9c5a00' }}>Unverified listing</span>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-xs text-slate-brand mb-4 leading-relaxed">
+                      This room is listed by a current tenant, not the property owner.
+                    </p>
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        className="flex-1 py-2.5 rounded-xl text-sm font-medium border border-ghost/40 text-jet hover:bg-surface-low transition-colors"
+                      >
+                        Chat with roommate
+                      </button>
+                      <button
+                        type="button"
+                        className="flex items-center gap-1.5 py-2.5 px-3 rounded-xl text-sm font-medium border border-ghost/40 transition-colors hover:bg-red-50"
+                        style={{ color: '#b91c1c' }}
+                        onClick={() => setShowReport(true)}
+                      >
+                        <Flag size={13} />
+                        Report
+                      </button>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center gap-3 mb-4">
+                    <img
+                      src={property.landlord.avatar}
+                      alt={property.landlord.name}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    <div>
+                      <div className="flex items-center gap-1">
+                        <span className="font-semibold text-sm text-jet">
+                          {property.landlord.name}
+                        </span>
+                        {property.landlord.verified && (
+                          <BadgeCheck size={14} className="text-coral" />
+                        )}
+                      </div>
+                      {property.landlord.verified && (
+                        <p className="text-xs text-slate-brand">Verified Premium Host</p>
+                      )}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="w-full px-6 py-3 rounded-lg border border-ghost/20 text-jet font-medium hover:bg-surface-low transition-colors flex items-center justify-center gap-2"
+                  >
+                    <MessageSquare size={14} />
+                    Chat with Landlord
+                  </button>
+                </>
+              )}
+
+              <ReportModal open={showReport} onClose={() => setShowReport(false)} listingId={property.id} />
 
               {/* Divider */}
               <div className="my-5" style={{ borderTop: '1px solid rgba(220,193,183,0.2)' }} />
