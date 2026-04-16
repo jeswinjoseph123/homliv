@@ -70,6 +70,16 @@ export function Navbar({ onSidebarToggle, user }: NavbarProps = {}) {
                 Login
               </Link>
               <Link
+                to="/roommate"
+                className={`text-sm font-medium transition-colors px-3 py-2 rounded-lg ${
+                  isActive('/roommate')
+                    ? 'text-white bg-white/10'
+                    : 'text-white/70 hover:text-white hover:bg-white/[0.07]'
+                }`}
+              >
+                Roommate
+              </Link>
+              <Link
                 to="/landlord"
                 className="text-sm font-semibold rounded-lg px-4 py-2 border border-coral text-coral hover:bg-coral hover:text-white transition-colors"
               >
@@ -103,6 +113,13 @@ export function Navbar({ onSidebarToggle, user }: NavbarProps = {}) {
               className="text-white/80 font-medium text-sm hover:text-white"
             >
               Login
+            </Link>
+            <Link
+              to="/roommate"
+              onClick={() => setMobileOpen(false)}
+              className="text-white/70 font-medium text-sm hover:text-white"
+            >
+              Roommate
             </Link>
             <Link
               to="/landlord"
