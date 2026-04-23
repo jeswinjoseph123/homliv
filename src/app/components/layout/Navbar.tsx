@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import { Menu, X, Bell } from 'lucide-react';
+import { toast } from 'sonner';
 import { LogoMark } from '../shared/LogoMark';
 
 interface NavbarUser {
@@ -44,7 +45,9 @@ export function Navbar({ onSidebarToggle, user }: NavbarProps = {}) {
                     : 'text-white/75 border-transparent hover:text-white'
                 }`}
               >
-                Listings
+                <span className="relative after:absolute after:bottom-[-2px] after:left-0 after:h-[2px] after:w-0 after:bg-coral after:transition-all after:duration-200 hover:after:w-full">
+                  Listings
+                </span>
               </Link>
             </div>
           </div>
@@ -52,7 +55,7 @@ export function Navbar({ onSidebarToggle, user }: NavbarProps = {}) {
           {/* Right side: user info (dashboard) or auth links (public) */}
           {user ? (
             <div className="flex items-center gap-3">
-              <button className="relative w-8 h-8 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 transition-colors">
+              <button onClick={() => toast.success('No new notifications')} className="relative w-8 h-8 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 transition-colors">
                 <Bell size={15} className="text-white" />
                 <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-coral" />
               </button>
@@ -67,7 +70,9 @@ export function Navbar({ onSidebarToggle, user }: NavbarProps = {}) {
                 to="/login"
                 className="text-sm font-medium text-white/80 hover:text-white transition-colors px-3 py-2"
               >
-                Login
+                <span className="relative after:absolute after:bottom-[-2px] after:left-0 after:h-[2px] after:w-0 after:bg-coral after:transition-all after:duration-200 hover:after:w-full">
+                  Login
+                </span>
               </Link>
               <Link
                 to="/roommate"
@@ -77,7 +82,9 @@ export function Navbar({ onSidebarToggle, user }: NavbarProps = {}) {
                     : 'text-white/70 hover:text-white hover:bg-white/[0.07]'
                 }`}
               >
-                Roommate
+                <span className="relative after:absolute after:bottom-[-2px] after:left-0 after:h-[2px] after:w-0 after:bg-coral after:transition-all after:duration-200 hover:after:w-full">
+                  Roommate
+                </span>
               </Link>
               <Link
                 to="/landlord"

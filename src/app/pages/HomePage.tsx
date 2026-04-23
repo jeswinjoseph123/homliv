@@ -6,6 +6,7 @@ import { Footer } from '../components/layout/Footer';
 import { PropertyCard } from '../components/shared/PropertyCard';
 import { mockProperties } from '../../data/mockProperties';
 import { useWishlist } from '../../hooks/useWishlist';
+import { useCountUp } from '../../hooks/useCountUp';
 
 const HERO_PREVIEW_IMAGE = 'https://images.unsplash.com/photo-1657639754502-3c138cb24b4c?w=600&q=80';
 
@@ -39,24 +40,6 @@ const STATS = [
   { end: 28000, suffix: '+', label: 'Happy Tenants' },
   { end: 3, suffix: '', label: 'Cities Covered' },
 ];
-
-function useCountUp(end: number, duration = 1800, started = false) {
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    if (!started) return;
-    let startTime: number | null = null;
-    const step = (ts: number) => {
-      if (!startTime) startTime = ts;
-      const progress = Math.min((ts - startTime) / duration, 1);
-      // ease-out cubic
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.floor(eased * end));
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, [started, end, duration]);
-  return count;
-}
 
 const gradientText: React.CSSProperties = {
   background: 'linear-gradient(135deg, #ef8354 0%, #d47550 60%, #c05030 100%)',
@@ -106,13 +89,6 @@ export function HomePage() {
 
   return (
     <div className="bg-white text-ink">
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: rotate(3deg) translateY(0px); }
-          50% { transform: rotate(3deg) translateY(-14px); }
-        }
-        .animate-float { animation: float 6s ease-in-out infinite; }
-      `}</style>
       <Navbar />
 
       {/* ─── HERO ─── */}

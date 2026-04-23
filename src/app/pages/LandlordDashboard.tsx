@@ -85,6 +85,7 @@ export function LandlordDashboard() {
                 <OverviewTab
                   isVerified={isVerified}
                   onListProperty={() => navigate('/landlord/list-property', { viewTransition: true })}
+                  onNav={setActiveTab}
                 />
               )}
               {activeTab === 'properties'  && (
@@ -93,7 +94,7 @@ export function LandlordDashboard() {
                   onListNew={() => navigate('/landlord/list-property', { viewTransition: true })}
                 />
               )}
-              {activeTab === 'tenants'     && <TenantsTab />}
+              {activeTab === 'tenants'     && <TenantsTab onNav={setActiveTab} />}
               {activeTab === 'maintenance' && <MaintenanceTab />}
               {activeTab === 'payments'    && <PaymentsTab />}
               {activeTab === 'settings'    && <SettingsTab />}

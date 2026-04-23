@@ -35,11 +35,12 @@ src/
       layout/        # Navbar, Footer
       shared/        # PropertyCard, LogoMark, StatusBadge, ChatInterface
       landlord/      # LandlordDashboard tab components + verify/ wizard steps
+      roommate/      # RoommateDashboard tab components
       tenant/        # TenantDashboard split components
       ui/            # shadcn/ui components (auto-generated, do not edit)
     pages/           # One file per route
   data/              # Mock data only — mockProperties.ts (14 properties)
-  hooks/             # useWishlist, useChat, useVerificationStore (local state)
+  hooks/             # useWishlist, useChat, useVerificationStore, useRoommateStore, useCountUp, useScrollReveal
   lib/               # utils.ts (shadcn helper + custom utils)
   types/             # Shared TypeScript interfaces (index.ts)
 ```
@@ -98,6 +99,7 @@ Set globally in `src/styles/theme.css` and `index.html`. **Do not add any Google
 2. **NO 100% BLACK.** Always use `text-jet` (`#2d3142`) for deep tones. `text-ink` (`#1d1d1f`) for body copy.
 3. **CORAL IS SCARCE.** Only use coral for: CTA buttons, price tags, active states, key highlights. Never decorative.
 4. **NO DEFAULT SHADOWS.** Never use `shadow-md`, `shadow-lg`, or any Tailwind shadow preset. Use explicit shadow values only.
+5. **NO `overflow-hidden` on table card wrappers.** Any card that contains a `<table>` with dropdowns/popovers must NOT use `overflow-hidden` — it clips absolutely-positioned children. Apply border-radius to header `<th>` cells directly instead.
 5. **NO CARD BORDERS.** Cards are `bg-white` on `bg-surface-low` or `bg-surface`. Contrast creates the boundary.
 6. **MINIMUM GRID GAP is 24px (`gap-6`).** Never go below this.
 7. **Ghost borders** when absolutely required: `border border-[#dcc1b7]/15` — only for form containers and modal wrappers.
@@ -279,7 +281,7 @@ Back-to-top button (fixed, bottom-right, appears after 500px scroll)
 ```
 
 ### Stats strip — animated counters
-Stats count up from 0 to their target value on page load using `IntersectionObserver` (fires when strip enters viewport). Uses cubic ease-out via `requestAnimationFrame`. Implemented via `useCountUp` hook and `StatCounter` component, both defined locally in `HomePage.tsx`.
+Stats count up from 0 to their target value on page load using `IntersectionObserver` (fires when strip enters viewport). Uses cubic ease-out via `requestAnimationFrame`. Implemented via `useCountUp` hook (`src/hooks/useCountUp.ts`) and `StatCounter` component defined locally in `HomePage.tsx`. Scroll reveal uses `useScrollReveal` hook (`src/hooks/useScrollReveal.ts`) — fires once when element enters viewport, then disconnects observer.
 
 ```tsx
 // STATS shape — numeric end + suffix stored separately
@@ -428,10 +430,10 @@ src/app/components/landlord/
   LandlordSidebar.tsx     — sidebar nav + mobile backdrop (props: activeTab, onNav, isOpen, onClose)
   OverviewTab.tsx         — KPI cards, upcoming rent, recent activity (props: onListProperty, isVerified)
   PropertiesTab.tsx       — property list rows (props: onListNew, isVerified)
-  TenantsTab.tsx          — tenants table (no special props)
+  TenantsTab.tsx          — 3 stat cards (Total/Active/Overdue) + table-fixed tenants table; overdue avatar gets red dot indicator; ticket count as coral gradient badge; Message + Phone action buttons (no special props)
   MessagesTab.tsx         — link to chat page (no special props)
-  MaintenanceTab.tsx      — maintenance tickets table (no special props)
-  PaymentsTab.tsx         — payment stats + history (no special props)
+  MaintenanceTab.tsx      — 3 stat cards (Open/In Progress/Resolved) + table-fixed tickets table; ticket ID as monospaced pill; priority as colored pill + dot (red/amber/emerald); no overflow-hidden on wrapper (no special props)
+  PaymentsTab.tsx         — "Rent Tracker" header + Set up Rent Schedule button; 3 stat cards (Collected/Pending/Overdue) with live totals; table-fixed rent tracker table; ActionsDropdown (... button → contextual status change options); Property Payment History accordion; NO overflow-hidden on table wrapper (no special props)
   SettingsTab.tsx         — profile, settings list + Dev Tools verification toggle
   ListPropertyModal.tsx   — 3-step listing wizard (props: open, onClose — owns form state internally)
   verify/                 — 4-step verification wizard step components
@@ -440,6 +442,55 @@ src/app/components/landlord/
 **State owned by LandlordDashboard.tsx:**
 - `activeTab`, `rtbDismissed`, `verifyDismissed`, `sidebarOpen`, `showNewPropertyModal`
 - `isVerified` — read from `useVerificationStore` (not local state)
+
+---
+
+## Roommate Dashboard — Component Split
+
+`RoommateDashboard.tsx` is a **thin shell**. All tab UI lives in `src/app/components/roommate/`.
+
+```
+src/app/components/roommate/
+  types.ts            — Tab union ('overview'|'listings'|'messages'|'settings') + ListRoomForm interface
+  RoommateSidebar.tsx — sidebar nav + mobile backdrop (props: activeTab, onNav, isOpen, onClose, hasActiveListing)
+  OverviewTab.tsx     — listing status card, enquiry feed, quick actions (props: onNav, hasActiveListing, expiryDate, isVerified)
+  MyListingsTab.tsx   — roommate's active listing card (no special props)
+  MessagesTab.tsx     — enquiry messages list (no special props)
+  SettingsTab.tsx     — profile + settings (no special props)
+```
+
+**State owned by RoommateDashboard.tsx:**
+- `activeTab`, `sidebarOpen`, `verifyBannerDismissed`, `listings`
+- `isVerified` — read from `useRoommateStore` (not local state)
+- `hasActiveListing`, `expiryDate` — derived from `listings`
+
+---
+
+## Roommate Verification Flow
+
+### Hook: `useRoommateStore`
+
+`src/hooks/useRoommateStore.ts` — localStorage-backed.
+
+```ts
+// Keys: homliv_roommate_role, homliv_roommate_verified
+const { isRoommate, setRoommate, isVerified, setVerified } = useRoommateStore();
+```
+
+### Route: `/roommate/verify` → `RoommateVerifyPage`
+
+2-step lightweight verification (email + phone only — simpler than landlord flow):
+
+1. **Email** — enter 6-digit code (send + confirm)
+2. **Phone** — enter phone + 6-digit code
+
+On complete: `setVerified(true)` → toast → navigate to `/roommate/list-room`.
+"Back to dashboard" uses `navBack()`.
+
+### Dashboard: verification gate
+
+If `!isVerified`: amber banner shown with "Verify Identity" button → `/roommate/verify`. Banner is dismissible (localStorage `homliv_roommate_banner_dismissed`).
+`OverviewTab.handleListRoom`: unverified → `/roommate/verify`, verified → `/roommate/list-room`.
 
 ---
 
@@ -499,11 +550,18 @@ export interface Property {
   amenities: string[]; bedrooms: number; bathrooms: number; area: number;
   available: boolean; wishlistCount: number; isRPZ: boolean;
   landlord: Landlord; description: string; houseRules: string[]; transport: string[];
+  // Roommate fields — optional, existing 14 properties omit these
+  postedBy?: 'landlord' | 'roommate';
+  roommateVerified?: boolean;
+  listingType?: 'permanent' | 'temporary';
+  availableFrom?: string;        // ISO date string
+  availableUntil?: string | null; // null = permanent
 }
 export interface Landlord { name: string; verified: boolean; avatar: string; }
 export interface Message { id: string; sender: 'tenant' | 'landlord'; text: string; time: string; read: boolean; }
 export interface Tenant { id: string; name: string; avatar: string; property: string; rentDue: string; status: 'active' | 'overdue'; tickets: number; }
 export interface MaintenanceTicket { id: string; tenantName: string; property: string; issue: string; status: 'Open' | 'In Progress' | 'Resolved'; date: string; priority: 'High' | 'Medium' | 'Low'; }
+export interface Report { id: string; listingId: string; reportedBy: string; reason: string; details?: string; timestamp: string; }
 ```
 
 ---
@@ -533,8 +591,10 @@ export interface MaintenanceTicket { id: string; tenantName: string; property: s
 /chat/:tenancyId         → ChatPage
 /landlord/verify         → LandlordVerifyPage
 /landlord/list-property  → LandlordListPropertyPage
-/roommate/dashboard      → RoommateDashboard
-/roommate/list-room      → ListRoomPage
+/roommate               → RoommateSignupPage
+/roommate/verify        → RoommateVerifyPage
+/roommate/dashboard     → RoommateDashboard
+/roommate/list-room     → ListRoomPage
 ```
 
 All routes are client-side. No auth guard needed — mock navigation only.
@@ -574,13 +634,13 @@ Defined at module level in each wizard/listing page. **Never call `navigate()` d
 ### viewTransitionName placement
 
 - **Dashboard pages** (`LandlordDashboard`, `RoommateDashboard`): on `<main>`
-- **Wizard pages** (`LandlordListPropertyPage`, `ListRoomPage`, `LandlordVerifyPage`): on the wrapper `<div>` that contains the steps sidebar + form + tips (everything except the nav sidebar)
+- **Wizard pages** (`LandlordListPropertyPage`, `ListRoomPage`, `LandlordVerifyPage`, `RoommateVerifyPage`): on the wrapper `<div>` that contains the steps sidebar + form + tips (everything except the nav sidebar)
 
 ---
 
 ## Wizard Page Layout Pattern
 
-Used by: `LandlordListPropertyPage`, `ListRoomPage`, `LandlordVerifyPage`
+Used by: `LandlordListPropertyPage`, `ListRoomPage`, `LandlordVerifyPage`, `RoommateVerifyPage`
 
 ```
 h-screen flex flex-col overflow-hidden bg-surface-low
@@ -667,9 +727,12 @@ Both `TenantDashboard` and `LandlordDashboard` share the same shell structure:
 - **Never** use flat `bg-coral` for primary buttons — always use the terracotta gradient
 - **Never** use Tailwind default shadow presets (`shadow-md`, `shadow-lg`) — always use explicit `boxShadow` values
 - **Never** use purple-tinted surface colors — `surface` is `#fafafa`, `surface-low` is `#f5f5f7`
-- **Never** add new tab components directly inside a dashboard page file — extract to `src/app/components/tenant/` or `src/app/components/landlord/`
+- **Never** add new tab components directly inside a dashboard page file — extract to `src/app/components/tenant/`, `src/app/components/landlord/`, or `src/app/components/roommate/`
 - **Never** set `scroll-behavior: smooth` on individual elements — it is set globally on `html` in `theme.css`
 - **Never** use `bg-coral/10` as a static decorative icon background — only valid as an active/selected state indicator
+- **Never** use `overflow-hidden` on a card wrapper that contains a `<table>` with dropdowns — clips absolutely-positioned children. Use `table-fixed` + border-radius on `<th>` cells instead
+- **Never** use CSS grid (`grid-cols-[...]`) for table headers + rows — use a real `<table>` with `table-fixed` and `<colgroup>` for guaranteed column alignment
+- **Dashboard tab pages** must use a `<div className="flex flex-col gap-5">` root with a header block (title + subtitle) at the top, then stat cards, then the main content card
 
 ---
 
@@ -710,7 +773,7 @@ Rules:
 | `UI Utils (cn helper)` | 39 | Every shadcn/ui component routes through this — breaking it breaks all UI |
 | `TenantDashboard Page (Shell)` | 13 | Orchestrates all tenant tab components + state |
 | `Mock Properties Data` | 9 | Single source for listings, chat, wishlist, AND maintenance data |
-| `Client-Side Router (routes.tsx)` | 10 | All 9 routes wired here (now includes /landlord/verify) |
+| `Client-Side Router (routes.tsx)` | 10 | All routes wired here — now 14 including /roommate/verify |
 | `Sidebar UI Component (shadcn)` | 9 | Composite: composes Button, Input, Separator, Skeleton, Tooltip, Sheet |
 | `LandlordDashboard Page` | 9 | Landlord-side shell — now also reads useVerificationStore |
 
@@ -720,14 +783,16 @@ Rules:
 - **`ChatInterface` is dual-context** — embedded in `TenantDashboard` AND standalone in `ChatPage`. The `flex overflow-hidden` wrapper rule exists because of this dual usage.
 - **Ireland compliance lives in two places** — RPZ badge in `PropertyCard.tsx`, RTB banner in `LandlordDashboard.tsx`. Check Ireland-Specific Rules when touching either.
 - **Verification state is localStorage-only** — `useVerificationStore` persists `homliv_landlord_verified`. No backend. When backend ships, replace the hook.
-- **`useVerificationStore` is consumed by 3 components** — `LandlordDashboard`, `OverviewTab` (via prop), `PropertiesTab` (via prop), `SettingsTab` (direct). Any change to the store interface touches all four.
+- **`useVerificationStore` is consumed by 4 components** — `LandlordDashboard`, `OverviewTab` (via prop), `PropertiesTab` (via prop), `SettingsTab` (direct). Any change to the store interface touches all four.
+- **`useRoommateStore` mirrors `useVerificationStore` pattern** — localStorage-backed, consumed by `RoommateDashboard`, `RoommateVerifyPage`, `OverviewTab` (roommate). Keys: `homliv_roommate_role` + `homliv_roommate_verified`.
 - **39 shadcn/ui components all depend on `cn()` in `src/app/components/ui/utils.ts`** — never edit or move this file.
 
 ### Community Map (key communities)
 
 - **Tenant Dashboard Feature** (22 nodes) — `TenantDashboard`, tab components, `LocalTicket`/`TicketForm` types
 - **Landlord Verification Flow** (7 nodes) — `LandlordVerifyPage`, 4 step components, `useVerificationStore`, `LandlordSignupPage`
-- **App Routing & Pages** (10 nodes) — `App.tsx`, `routes.tsx`, all 9 page components
+- **Roommate Feature** (6 nodes) — `RoommateDashboard`, tab components, `useRoommateStore`, `RoommateVerifyPage`
+- **App Routing & Pages** (10 nodes) — `App.tsx`, `routes.tsx`, all page components (now 14 routes)
 - **Brand Identity** (3 nodes, cohesion 1.0) — `Navbar`, `Footer`, `LogoMark` — always move together
 - **Auth Layout** (4 nodes) — `TenantLoginPage`, `LandlordSignupPage`, 50/50 split pattern
 - **shadcn/ui Primitive Components** (74 nodes) — auto-generated, never edit directly

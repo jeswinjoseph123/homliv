@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { CheckCircle, Calendar, Shield, TrendingUp, Download } from 'lucide-react';
 import { toast } from 'sonner';
 
 export function PaymentsTab() {
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+
   const payments = [
     { month: 'April 2024',    amount: 950, status: 'Pending', date: '1 Apr 2024',  method: 'Bank Transfer' },
     { month: 'March 2024',    amount: 950, status: 'Paid',    date: '1 Mar 2024',  method: 'Bank Transfer' },
@@ -32,7 +35,16 @@ export function PaymentsTab() {
       {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
 
-        <div className="bg-white rounded-xl p-4 shadow-[0_4px_20px_rgba(23,27,43,0.09),_0_1px_4px_rgba(23,27,43,0.05)] flex flex-col gap-3">
+        <div
+          className="bg-white rounded-xl p-4 flex flex-col gap-3"
+          style={{
+            transform: hoveredCard === 'total' ? 'translateY(-4px)' : 'translateY(0)',
+            boxShadow: hoveredCard === 'total' ? '0 16px 48px rgba(23,27,43,0.12)' : '0 4px 20px rgba(23,27,43,0.09), 0 1px 4px rgba(23,27,43,0.05)',
+            transition: 'transform 200ms ease, box-shadow 200ms ease',
+          }}
+          onMouseEnter={() => setHoveredCard('total')}
+          onMouseLeave={() => setHoveredCard(null)}
+        >
           <div className="flex items-center justify-between">
             <div className="w-8 h-8 rounded-lg bg-surface-low flex items-center justify-center">
               <TrendingUp size={15} className="text-slate-brand" />
@@ -45,8 +57,17 @@ export function PaymentsTab() {
           </div>
         </div>
 
-        <div className="rounded-xl p-4 flex flex-col gap-3"
-             style={{ background: 'linear-gradient(145deg, #d47550 0%, #b85530 100%)', boxShadow: '0 8px 32px rgba(180,80,40,0.30), 0 2px 8px rgba(180,80,40,0.15)' }}>
+        <div
+          className="rounded-xl p-4 flex flex-col gap-3"
+          style={{
+            background: 'linear-gradient(145deg, #d47550 0%, #b85530 100%)',
+            transform: hoveredCard === 'due' ? 'translateY(-4px)' : 'translateY(0)',
+            boxShadow: hoveredCard === 'due' ? '0 20px 56px rgba(180,80,40,0.40), 0 4px 12px rgba(180,80,40,0.20)' : '0 8px 32px rgba(180,80,40,0.30), 0 2px 8px rgba(180,80,40,0.15)',
+            transition: 'transform 200ms ease, box-shadow 200ms ease',
+          }}
+          onMouseEnter={() => setHoveredCard('due')}
+          onMouseLeave={() => setHoveredCard(null)}
+        >
           <div className="flex items-center justify-between">
             <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
               <Calendar size={15} className="text-white" />
@@ -59,7 +80,16 @@ export function PaymentsTab() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-4 shadow-[0_4px_20px_rgba(23,27,43,0.09),_0_1px_4px_rgba(23,27,43,0.05)] flex flex-col gap-3">
+        <div
+          className="bg-white rounded-xl p-4 flex flex-col gap-3"
+          style={{
+            transform: hoveredCard === 'deposit' ? 'translateY(-4px)' : 'translateY(0)',
+            boxShadow: hoveredCard === 'deposit' ? '0 16px 48px rgba(23,27,43,0.12)' : '0 4px 20px rgba(23,27,43,0.09), 0 1px 4px rgba(23,27,43,0.05)',
+            transition: 'transform 200ms ease, box-shadow 200ms ease',
+          }}
+          onMouseEnter={() => setHoveredCard('deposit')}
+          onMouseLeave={() => setHoveredCard(null)}
+        >
           <div className="flex items-center justify-between">
             <div className="w-8 h-8 rounded-lg bg-surface-low flex items-center justify-center">
               <Shield size={15} className="text-slate-brand" />
@@ -75,8 +105,10 @@ export function PaymentsTab() {
       </div>
 
       {/* Next payment hero */}
-      <div className="rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-5"
-           style={{ background: 'linear-gradient(145deg, #2d3142 0%, #232637 100%)', boxShadow: '0 8px 32px rgba(23,27,43,0.40), 0 2px 8px rgba(23,27,43,0.15)' }}>
+      <div
+        className="animate-fade-up rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-5"
+        style={{ background: 'linear-gradient(145deg, #2d3142 0%, #232637 100%)', boxShadow: '0 8px 32px rgba(23,27,43,0.40), 0 2px 8px rgba(23,27,43,0.15)', animationDelay: '80ms' }}
+      >
         <div className="flex-1">
           <p className="text-white/50 text-[0.65rem] font-bold uppercase tracking-[0.07em] mb-1">Next Payment Due</p>
           <p className="font-bold text-5xl text-white tracking-[-0.03em]">€950</p>
@@ -110,8 +142,11 @@ export function PaymentsTab() {
           {payments.map((payment, i) => (
             <div
               key={i}
-              className="flex items-center gap-4 px-5 py-4 hover:bg-surface-low/50 transition-colors"
-              style={{ borderBottom: i < payments.length - 1 ? '1px solid rgba(220,193,183,0.14)' : 'none' }}
+              className="animate-fade-up flex items-center gap-4 px-5 py-4 hover:bg-surface-low/50 transition-colors"
+              style={{
+                animationDelay: `${i * 50}ms`,
+                borderBottom: i < payments.length - 1 ? '1px solid rgba(220,193,183,0.14)' : 'none',
+              }}
             >
               <div className="w-10 h-10 rounded-xl bg-surface-low flex flex-col items-center justify-center shrink-0">
                 <p className="text-[0.55rem] font-bold uppercase tracking-[0.04em] text-slate-brand leading-none">

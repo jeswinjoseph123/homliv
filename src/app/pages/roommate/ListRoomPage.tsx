@@ -1,18 +1,19 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { Check, Shield, Lock, Lightbulb, ImagePlus, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 import { Navbar } from '../../components/layout/Navbar';
 import { RoommateSidebar } from '../../components/roommate/RoommateSidebar';
 import { type ListRoomForm, type Tab } from '../../components/roommate/types';
+import { useRoommateStore } from '../../../hooks/useRoommateStore';
+import { mockProperties } from '@/data/mockProperties';
+import type { Property } from '@/types';
 
 function navBack(navigate: ReturnType<typeof useNavigate>, to: string) {
   document.documentElement.dataset.navBack = '';
   navigate(to, { viewTransition: true });
   setTimeout(() => delete document.documentElement.dataset.navBack, 500);
 }
-import { mockProperties } from '@/data/mockProperties';
-import type { Property } from '@/types';
 
 /* ─── constants ─── */
 const ROOM_TYPES: ListRoomForm['type'][] = ['Single Room', 'Double Room', 'En-Suite', 'Studio'];
@@ -321,11 +322,18 @@ function Step3({ form }: { form: ListRoomForm }) {
 /* ════════════════════════════════════════════════════ */
 export function ListRoomPage() {
   const navigate = useNavigate();
+  const { isVerified } = useRoommateStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<ListRoomForm>(EMPTY_FORM);
   const stepDir = useRef<'forward' | 'back'>('forward');
   const progress = Math.round((step / STEPS.length) * 100);
+
+  useEffect(() => {
+    if (!isVerified) navigate('/roommate/verify', { viewTransition: true });
+  }, [isVerified, navigate]);
+
+  if (!isVerified) return null;
 
   function set<K extends keyof ListRoomForm>(key: K, value: ListRoomForm[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -357,7 +365,7 @@ export function ListRoomPage() {
       houseRules: form.houseRules.split('\n').filter(Boolean),
       transport: [],
       postedBy: 'roommate',
-      roommateVerified: false,
+      roommateVerified: isVerified,
       listingType: form.listingType,
       availableFrom: form.availableFrom,
       availableUntil: form.listingType === 'temporary' ? form.availableUntil : null,
@@ -434,7 +442,7 @@ export function ListRoomPage() {
               </div>
             </div>
 
-          <div className="flex-1 flex justify-center items-start px-5 py-6 overflow-y-auto">
+          <div className="flex-1 flex justify-center items-start px-5 py-6 overflow-y-auto h-full">
           <div className="w-full max-w-lg">
 
             <div className="flex items-center justify-between mb-1.5">
@@ -450,7 +458,7 @@ export function ListRoomPage() {
               />
             </div>
 
-            <div className="bg-white rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(23,27,43,0.08),_0_1px_4px_rgba(23,27,43,0.04)]">
+            <div className="bg-white rounded-2xl shadow-[0_4px_24px_rgba(23,27,43,0.08),_0_1px_4px_rgba(23,27,43,0.04)]">
               <div key={step} className="p-6 pb-2" style={{ animation: `420ms cubic-bezier(0.25,1,0.5,1) ${stepDir.current === 'forward' ? 'step-from-right' : 'step-from-left'} both` }}>
                 {step === 1 && <Step1 form={form} set={set} />}
                 {step === 2 && <Step2 form={form} set={set} />}
@@ -479,7 +487,7 @@ export function ListRoomPage() {
                 onClick={() => navBack(navigate, '/roommate/dashboard')}
                 className="text-xs text-slate-brand/60 hover:text-slate-brand transition-colors"
               >
-                ← Back to Listings
+                ← Back to Dashboard
               </button>
             </div>
 

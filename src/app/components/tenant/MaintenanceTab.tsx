@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Plus, CheckCircle, AlertTriangle, Wrench, MessageSquare } from 'lucide-react';
 import { StatusBadge } from '@/app/components/shared/StatusBadge';
 import { type LocalTicket, CATEGORY_STYLE, PRIORITY_STYLE } from './types';
@@ -8,6 +9,8 @@ interface MaintenanceTabProps {
 }
 
 export function MaintenanceTab({ tickets, onRaiseTicket }: MaintenanceTabProps) {
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+
   return (
     <div className="p-4 sm:p-6 flex flex-col gap-5 max-w-[1100px] mx-auto w-full">
 
@@ -18,7 +21,7 @@ export function MaintenanceTab({ tickets, onRaiseTicket }: MaintenanceTabProps) 
           <p className="text-sm text-slate-brand mt-0.5">Track and manage all your repair requests.</p>
         </div>
         <button
-          className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-opacity hover:opacity-90 shrink-0"
+          className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-opacity hover:opacity-90 active:scale-[0.97] transition-transform shrink-0"
           style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
           onClick={onRaiseTicket}
         >
@@ -29,7 +32,16 @@ export function MaintenanceTab({ tickets, onRaiseTicket }: MaintenanceTabProps) 
       {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
 
-        <div className="bg-white rounded-xl p-4 shadow-[0_4px_20px_rgba(23,27,43,0.09),_0_1px_4px_rgba(23,27,43,0.05)] flex flex-col gap-3">
+        <div
+          className="bg-white rounded-xl p-4 flex flex-col gap-3"
+          style={{
+            transform: hoveredCard === 'open' ? 'translateY(-4px)' : 'translateY(0)',
+            boxShadow: hoveredCard === 'open' ? '0 16px 48px rgba(23,27,43,0.12)' : '0 4px 20px rgba(23,27,43,0.09), 0 1px 4px rgba(23,27,43,0.05)',
+            transition: 'transform 200ms ease, box-shadow 200ms ease',
+          }}
+          onMouseEnter={() => setHoveredCard('open')}
+          onMouseLeave={() => setHoveredCard(null)}
+        >
           <div className="flex items-center justify-between">
             <div className="w-8 h-8 rounded-lg bg-surface-low flex items-center justify-center">
               <AlertTriangle size={15} className="text-coral" />
@@ -44,8 +56,17 @@ export function MaintenanceTab({ tickets, onRaiseTicket }: MaintenanceTabProps) 
           </div>
         </div>
 
-        <div className="rounded-xl p-4 flex flex-col gap-3"
-             style={{ background: 'linear-gradient(145deg, #d47550 0%, #b85530 100%)', boxShadow: '0 8px 32px rgba(180,80,40,0.30), 0 2px 8px rgba(180,80,40,0.15)' }}>
+        <div
+          className="rounded-xl p-4 flex flex-col gap-3"
+          style={{
+            background: 'linear-gradient(145deg, #d47550 0%, #b85530 100%)',
+            transform: hoveredCard === 'active' ? 'translateY(-4px)' : 'translateY(0)',
+            boxShadow: hoveredCard === 'active' ? '0 20px 56px rgba(180,80,40,0.40), 0 4px 12px rgba(180,80,40,0.20)' : '0 8px 32px rgba(180,80,40,0.30), 0 2px 8px rgba(180,80,40,0.15)',
+            transition: 'transform 200ms ease, box-shadow 200ms ease',
+          }}
+          onMouseEnter={() => setHoveredCard('active')}
+          onMouseLeave={() => setHoveredCard(null)}
+        >
           <div className="flex items-center justify-between">
             <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
               <Wrench size={15} className="text-white" />
@@ -60,7 +81,16 @@ export function MaintenanceTab({ tickets, onRaiseTicket }: MaintenanceTabProps) 
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-4 shadow-[0_4px_20px_rgba(23,27,43,0.09),_0_1px_4px_rgba(23,27,43,0.05)] flex flex-col gap-3">
+        <div
+          className="bg-white rounded-xl p-4 flex flex-col gap-3"
+          style={{
+            transform: hoveredCard === 'resolved' ? 'translateY(-4px)' : 'translateY(0)',
+            boxShadow: hoveredCard === 'resolved' ? '0 16px 48px rgba(23,27,43,0.12)' : '0 4px 20px rgba(23,27,43,0.09), 0 1px 4px rgba(23,27,43,0.05)',
+            transition: 'transform 200ms ease, box-shadow 200ms ease',
+          }}
+          onMouseEnter={() => setHoveredCard('resolved')}
+          onMouseLeave={() => setHoveredCard(null)}
+        >
           <div className="flex items-center justify-between">
             <div className="w-8 h-8 rounded-lg bg-surface-low flex items-center justify-center">
               <CheckCircle size={15} className="text-slate-brand" />
@@ -79,10 +109,11 @@ export function MaintenanceTab({ tickets, onRaiseTicket }: MaintenanceTabProps) 
 
       {/* Ticket cards */}
       <div className="flex flex-col gap-4">
-        {tickets.map((ticket) => (
+        {tickets.map((ticket, index) => (
           <div
             key={ticket.id}
-            className="bg-white rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(23,27,43,0.09),_0_1px_4px_rgba(23,27,43,0.05)]"
+            className="animate-fade-up bg-white rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(23,27,43,0.09),_0_1px_4px_rgba(23,27,43,0.05)]"
+            style={{ animationDelay: `${index * 70}ms` }}
           >
             <div className="flex gap-0">
               <div

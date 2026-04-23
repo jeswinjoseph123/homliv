@@ -1,6 +1,6 @@
 import type { Property, Tenant, MaintenanceTicket, Report } from '@/types';
 
-export const mockProperties = [
+export const mockProperties: Property[] = [
   {
     id: '1',
     title: 'Double room in Ranelagh, D6',
@@ -380,7 +380,7 @@ export const mockProperties = [
     availableFrom: '2026-04-15',
     availableUntil: null,
   },
-] satisfies Property[];
+];
 
 export const mockMessages = [
   { id: '1', sender: 'tenant', text: 'Hi, is this room still available?', time: '10:32 AM', read: true },

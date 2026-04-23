@@ -33,7 +33,7 @@ export function WishlistTab({ wishlistItems, onRemove, onClear }: WishlistTabPro
 
       {/* Empty state */}
       {wishlistItems.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-20 gap-4">
+        <div className="animate-fade-up flex flex-col items-center justify-center py-20 gap-4">
           <div className="w-16 h-16 rounded-2xl bg-surface flex items-center justify-center">
             <Heart size={28} className="text-ghost" />
           </div>
@@ -54,11 +54,14 @@ export function WishlistTab({ wishlistItems, onRemove, onClear }: WishlistTabPro
       {/* Grid */}
       {wishlistItems.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
-          {wishlistItems.map((prop) => (
+          {wishlistItems.map((prop, index) => (
             <div
               key={prop.id}
-              className="bg-white rounded-2xl overflow-hidden group"
-              style={{ boxShadow: '0 4px 20px rgba(23,27,43,0.09), 0 1px 4px rgba(23,27,43,0.05)' }}
+              className="animate-fade-up bg-white rounded-2xl overflow-hidden group"
+              style={{
+                animationDelay: `${index * 70}ms`,
+                boxShadow: '0 4px 20px rgba(23,27,43,0.09), 0 1px 4px rgba(23,27,43,0.05)',
+              }}
             >
               {/* Image */}
               <div className="relative m-3 rounded-xl overflow-hidden h-48">

@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
   { path: '/roommate/verify',   Component: RoommateVerifyPage },
   // Roommate Phase 2 routes
   { path: '/roommate/dashboard', Component: RoommateDashboard },
-  { path: '/roommate/listings',  element: <Navigate to="/roommate" replace /> },
+  { path: '/roommate/listings',  element: <Navigate to="/roommate/dashboard" replace /> },
   { path: '/roommate/list-room', Component: ListRoomPage },
   { path: '*',                  Component: HomePage },
 ]);

@@ -20,6 +20,7 @@ interface SidebarContentProps {
   selectedAmenities: string[];
   toggleAmenity: (a: string) => void;
   clearAll: () => void;
+  onApply: () => void;
 }
 
 function SidebarContent({
@@ -32,6 +33,7 @@ function SidebarContent({
   selectedAmenities,
   toggleAmenity,
   clearAll,
+  onApply,
 }: SidebarContentProps) {
   return (
     <div>
@@ -129,13 +131,14 @@ function SidebarContent({
       </div>
 
       <button
-        className="w-full py-3 rounded-xl font-semibold text-sm text-white transition-opacity hover:opacity-90"
+        onClick={onApply}
+        className="w-full py-3 rounded-xl font-semibold text-sm text-white transition-opacity hover:opacity-90 active:scale-[0.97] transition-transform"
         style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
       >
         Apply Filters
       </button>
       <button
-        className="w-full py-2 mt-2 text-xs font-bold tracking-[0.08em] uppercase transition-colors text-slate-brand hover:text-jet"
+        className="w-full py-2 mt-2 text-xs font-bold tracking-[0.08em] uppercase transition-colors text-slate-brand hover:text-jet active:scale-[0.97] transition-transform"
         onClick={clearAll}
       >
         Clear All
@@ -181,8 +184,15 @@ export function ListingsPage() {
     return true;
   });
 
-  // Sort
-  const sorted = [...activeListings].sort((a, b) =>
+  // Filter + Sort
+  const filtered = activeListings.filter((l) => {
+    if (selectedRoomTypes.length && !selectedRoomTypes.includes(l.type)) return false;
+    if (l.price < rentRange[0] || l.price > rentRange[1]) return false;
+    if (selectedAmenities.length && !selectedAmenities.every((a) => l.amenities.some(la => la.toLowerCase().includes(a.toLowerCase())))) return false;
+    return true;
+  });
+
+  const sorted = [...filtered].sort((a, b) =>
     sortBy === 'price' ? a.price - b.price : (Number(b.id) || 0) - (Number(a.id) || 0)
   );
 
@@ -200,6 +210,7 @@ export function ListingsPage() {
     selectedAmenities,
     toggleAmenity,
     clearAll,
+    onApply: () => { setCurrentPage(1); setShowFilterModal(false); },
   };
 
   return (
@@ -230,7 +241,7 @@ export function ListingsPage() {
               Filters
             </button>
             <button
-              className="px-5 py-2 rounded-full text-xs font-bold tracking-[0.06em] uppercase transition-opacity hover:opacity-90 text-white"
+              className="px-5 py-2 rounded-full text-xs font-bold tracking-[0.06em] uppercase transition-opacity hover:opacity-90 active:scale-[0.97] transition-transform text-white"
               style={sortBy === 'newest'
                 ? { background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }
                 : { background: 'transparent', border: '1px solid rgba(220,193,183,0.5)', color: '#4f5d75' }}
@@ -239,7 +250,7 @@ export function ListingsPage() {
               Newest
             </button>
             <button
-              className="px-5 py-2 rounded-full text-xs font-bold tracking-[0.06em] uppercase transition-opacity hover:opacity-90 text-white"
+              className="px-5 py-2 rounded-full text-xs font-bold tracking-[0.06em] uppercase transition-opacity hover:opacity-90 active:scale-[0.97] transition-transform text-white"
               style={sortBy === 'price'
                 ? { background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }
                 : { background: 'transparent', border: '1px solid rgba(220,193,183,0.5)', color: '#4f5d75' }}
@@ -256,7 +267,7 @@ export function ListingsPage() {
         <div className="flex gap-8">
           {/* Sidebar */}
           <aside
-            className="hidden lg:block shrink-0 p-6 self-start sticky top-20 bg-white rounded-2xl"
+            className="hidden lg:block shrink-0 p-6 self-start sticky top-20 bg-white rounded-2xl animate-fade-up"
             style={{ width: 240, boxShadow: '0 4px 20px rgba(23,27,43,0.08), 0 1px 4px rgba(23,27,43,0.04)' }}
           >
             <SidebarContent {...sidebarProps} />
