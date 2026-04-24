@@ -445,4 +445,8 @@ export const mockTickets = [
   { id: 'tk3', tenantName: 'James O\'Connor', property: 'Single Room in Rathmines', issue: 'Window latch broken', status: 'Resolved', date: '2024-01-10', priority: 'Low' },
 ] satisfies MaintenanceTicket[];
 
-export const mockReports: Report[] = [];
+export const mockReports: Report[] = [
+  { id: 'rpt1', listingId: '3', reportedBy: 'Priya Nair', reason: 'Misleading photos', details: 'Photos do not match the actual room', timestamp: '2026-04-20T10:30:00Z' },
+  { id: 'rpt2', listingId: '7', reportedBy: "James O'Connor", reason: 'Price above RPZ limit', details: 'Asking €2,600 but RPZ cap is €2,400', timestamp: '2026-04-21T14:15:00Z' },
+  { id: 'rpt3', listingId: '1', reportedBy: 'Arun Kumar', reason: 'Unresponsive landlord', details: 'No response to 3 messages in 10 days', timestamp: '2026-04-22T09:00:00Z' },
+];
