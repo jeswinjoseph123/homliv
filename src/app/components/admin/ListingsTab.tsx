@@ -82,13 +82,13 @@ export function ListingsTab() {
 
         <table className="w-full table-fixed border-collapse">
           <colgroup>
-            <col style={{ width: '26%' }} />
-            <col style={{ width: '14%' }} />
-            <col style={{ width: '20%' }} />
-            <col style={{ width: '10%' }} />
-            <col style={{ width: '14%' }} />
-            <col style={{ width: '10%' }} />
-            <col style={{ width: '6%' }} />
+            <col style={{ width: '23%' }} />
+            <col style={{ width: '13%' }} />
+            <col style={{ width: '18%' }} />
+            <col style={{ width: '9%' }} />
+            <col style={{ width: '13%' }} />
+            <col style={{ width: '11%' }} />
+            <col style={{ width: '13%' }} />
           </colgroup>
           <thead>
             <tr>
@@ -126,10 +126,10 @@ export function ListingsTab() {
                   </td>
                   <td className="px-4 py-3.5 align-middle">
                     {!removed.has(p.id) && (
-                      <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-1.5">
                         <button
                           onClick={() => toggleFlag(p.id)}
-                          className={`text-[0.65rem] font-bold px-2 py-1 rounded-md transition-colors ${
+                          className={`text-[0.65rem] font-bold px-2.5 py-1.5 rounded-md transition-colors whitespace-nowrap ${
                             flagged.has(p.id)
                               ? 'bg-amber-100 text-amber-700 hover:bg-amber-200'
                               : 'bg-[#f0f1f3] text-slate-brand hover:bg-[#e8e9ec]'
@@ -139,7 +139,7 @@ export function ListingsTab() {
                         </button>
                         <button
                           onClick={() => removeListingById(p.id)}
-                          className="text-[0.65rem] font-bold px-2 py-1 rounded-md bg-red-50 text-red-500 hover:bg-red-100 transition-colors"
+                          className="text-[0.65rem] font-bold px-2.5 py-1.5 rounded-md bg-red-50 text-red-500 hover:bg-red-100 transition-colors whitespace-nowrap"
                         >
                           Remove
                         </button>

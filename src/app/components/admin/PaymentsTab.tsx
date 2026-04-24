@@ -82,12 +82,12 @@ export function PaymentsTab() {
 
         <table className="w-full table-fixed border-collapse">
           <colgroup>
+            <col style={{ width: '22%' }} />
             <col style={{ width: '24%' }} />
-            <col style={{ width: '26%' }} />
-            <col style={{ width: '14%' }} />
-            <col style={{ width: '14%' }} />
+            <col style={{ width: '13%' }} />
+            <col style={{ width: '13%' }} />
             <col style={{ width: '12%' }} />
-            <col style={{ width: '10%' }} />
+            <col style={{ width: '16%' }} />
           </colgroup>
           <thead>
             <tr>
@@ -129,10 +129,10 @@ export function PaymentsTab() {
                   </td>
                   <td className="px-5 py-4 align-middle">
                     {status !== 'paid' ? (
-                      <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-1.5">
                         <button
                           onClick={() => markPaid(t.id)}
-                          className="text-[0.65rem] font-bold px-2 py-1 rounded-md text-white hover:opacity-90 transition-opacity"
+                          className="text-[0.65rem] font-bold px-2.5 py-1.5 rounded-md text-white hover:opacity-90 transition-opacity whitespace-nowrap"
                           style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
                         >
                           Mark Paid
@@ -140,7 +140,7 @@ export function PaymentsTab() {
                         {status === 'overdue' && (
                           <button
                             onClick={() => markChased(t.id)}
-                            className="text-[0.65rem] font-bold px-2 py-1 rounded-md bg-[#f0f1f3] text-slate-brand hover:bg-[#e8e9ec] transition-colors"
+                            className="text-[0.65rem] font-bold px-2.5 py-1.5 rounded-md bg-[#f0f1f3] text-slate-brand hover:bg-[#e8e9ec] transition-colors whitespace-nowrap"
                           >
                             Chase
                           </button>
