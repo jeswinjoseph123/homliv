@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { Link } from 'react-router';
 import {
   Heart, MessageSquare, Calendar, CheckCircle, Wrench,
   Share2, Hammer, ArrowUpRight, MapPin, Home,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { StatusBadge } from '@/app/components/shared/StatusBadge';
 import { type Tab, type LocalTicket } from './types';
 import { type Property } from '@/types';
@@ -15,11 +17,13 @@ interface OverviewTabProps {
 }
 
 export function OverviewTab({ wishlistItems, tickets, onNav, onRaiseTicket }: OverviewTabProps) {
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+
   return (
     <div className="p-4 sm:p-6 flex flex-col gap-5 max-w-[1100px] mx-auto w-full">
 
       {/* Header */}
-      <div className="flex items-start justify-between gap-4 flex-wrap">
+      <div className="animate-fade-up flex items-start justify-between gap-4 flex-wrap" style={{ animationDelay: '0ms' }}>
         <div>
           <h1 className="font-bold tracking-[-0.02em] text-[1.6rem] text-jet">Good morning, Arun.</h1>
           <p className="text-sm text-slate-brand mt-0.5">
@@ -27,13 +31,13 @@ export function OverviewTab({ wishlistItems, tickets, onNav, onRaiseTicket }: Ov
           </p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <button className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium border text-jet transition-colors hover:bg-surface-low"
+          <button onClick={() => toast.info('Share access coming soon')} className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium border text-jet transition-colors hover:bg-surface-low"
                   style={{ borderColor: 'rgba(220,193,183,0.40)' }}>
             <Share2 size={13} />
             Share Access
           </button>
           <button
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-white text-sm font-semibold transition-opacity hover:opacity-90"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-white text-sm font-semibold transition-opacity hover:opacity-90 active:scale-[0.97] transition-transform"
             style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
             onClick={onRaiseTicket}
           >
@@ -47,7 +51,17 @@ export function OverviewTab({ wishlistItems, tickets, onNav, onRaiseTicket }: Ov
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
 
         {/* Wishlisted */}
-        <div className="bg-white rounded-xl p-4 shadow-[0_4px_20px_rgba(23,27,43,0.09),_0_1px_4px_rgba(23,27,43,0.05)] flex flex-col gap-3">
+        <div
+          className="animate-fade-up bg-white rounded-xl p-4 flex flex-col gap-3"
+          style={{
+            animationDelay: '80ms',
+            transform: hoveredCard === 'wishlist' ? 'translateY(-4px)' : 'translateY(0)',
+            boxShadow: hoveredCard === 'wishlist' ? '0 16px 48px rgba(23,27,43,0.12)' : '0 4px 20px rgba(23,27,43,0.09), 0 1px 4px rgba(23,27,43,0.05)',
+            transition: 'transform 200ms ease, box-shadow 200ms ease',
+          }}
+          onMouseEnter={() => setHoveredCard('wishlist')}
+          onMouseLeave={() => setHoveredCard(null)}
+        >
           <div className="flex items-center justify-between">
             <div className="w-8 h-8 rounded-lg bg-surface-low flex items-center justify-center">
               <Heart size={15} className="text-coral" />
@@ -65,7 +79,17 @@ export function OverviewTab({ wishlistItems, tickets, onNav, onRaiseTicket }: Ov
         </div>
 
         {/* Active Chats */}
-        <div className="bg-white rounded-xl p-4 shadow-[0_4px_20px_rgba(23,27,43,0.09),_0_1px_4px_rgba(23,27,43,0.05)] flex flex-col gap-3">
+        <div
+          className="animate-fade-up bg-white rounded-xl p-4 flex flex-col gap-3"
+          style={{
+            animationDelay: '160ms',
+            transform: hoveredCard === 'chats' ? 'translateY(-4px)' : 'translateY(0)',
+            boxShadow: hoveredCard === 'chats' ? '0 16px 48px rgba(23,27,43,0.12)' : '0 4px 20px rgba(23,27,43,0.09), 0 1px 4px rgba(23,27,43,0.05)',
+            transition: 'transform 200ms ease, box-shadow 200ms ease',
+          }}
+          onMouseEnter={() => setHoveredCard('chats')}
+          onMouseLeave={() => setHoveredCard(null)}
+        >
           <div className="flex items-center justify-between">
             <div className="w-8 h-8 rounded-lg bg-surface-low flex items-center justify-center">
               <MessageSquare size={15} className="text-slate-brand" />
@@ -83,8 +107,18 @@ export function OverviewTab({ wishlistItems, tickets, onNav, onRaiseTicket }: Ov
         </div>
 
         {/* Next Viewing — coral gradient */}
-        <div className="rounded-xl p-4 flex flex-col gap-3"
-             style={{ background: 'linear-gradient(145deg, #d47550 0%, #b85530 100%)', boxShadow: '0 8px 32px rgba(180,80,40,0.30), 0 2px 8px rgba(180,80,40,0.15)' }}>
+        <div
+          className="animate-fade-up rounded-xl p-4 flex flex-col gap-3"
+          style={{
+            animationDelay: '240ms',
+            background: 'linear-gradient(145deg, #d47550 0%, #b85530 100%)',
+            transform: hoveredCard === 'viewing' ? 'translateY(-4px)' : 'translateY(0)',
+            boxShadow: hoveredCard === 'viewing' ? '0 20px 56px rgba(180,80,40,0.40), 0 4px 12px rgba(180,80,40,0.20)' : '0 8px 32px rgba(180,80,40,0.30), 0 2px 8px rgba(180,80,40,0.15)',
+            transition: 'transform 200ms ease, box-shadow 200ms ease',
+          }}
+          onMouseEnter={() => setHoveredCard('viewing')}
+          onMouseLeave={() => setHoveredCard(null)}
+        >
           <div className="flex items-center justify-between">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/20">
               <Calendar size={15} className="text-white" />
@@ -96,7 +130,7 @@ export function OverviewTab({ wishlistItems, tickets, onNav, onRaiseTicket }: Ov
             <p className="font-bold text-base text-white mt-0.5">Thursday 10 Apr</p>
             <p className="text-xs text-white/70">Scheduled for 2:00pm</p>
           </div>
-          <button className="text-xs font-semibold text-white flex items-center gap-1 hover:underline opacity-90">
+          <button onClick={() => onNav('tenancy')} className="text-xs font-semibold text-white flex items-center gap-1 hover:underline opacity-90">
             View details <ArrowUpRight size={11} />
           </button>
         </div>

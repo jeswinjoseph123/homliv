@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 import {
   MapPin, Heart, CheckCircle, Wifi, WashingMachine, Wind,
   Thermometer, DoorOpen, Utensils, Shield, ChevronLeft,
@@ -39,6 +40,8 @@ export function PropertyDetailPage() {
   const [viewingRequested, setViewingRequested] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
   const [showReport, setShowReport] = useState(false);
+  const { ref: galleryRef, visible: galleryVisible } = useScrollReveal();
+  const { ref: asideRef, visible: asideVisible } = useScrollReveal();
   const property = mockProperties.find((p) => p.id === id);
 
   if (!property) {
@@ -78,7 +81,7 @@ export function PropertyDetailPage() {
           {/* Left column */}
           <div className="flex-1 min-w-0">
             {/* Gallery */}
-            <div className="grid grid-cols-[2fr_1fr] gap-2 h-[380px] md:h-[480px] rounded-xl overflow-hidden" style={{ boxShadow: '0 8px 32px rgba(23,27,43,0.12)' }}>
+            <div ref={galleryRef as React.RefObject<HTMLDivElement>} className={`grid grid-cols-[2fr_1fr] gap-2 h-[380px] md:h-[480px] rounded-xl overflow-hidden ${galleryVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{ boxShadow: '0 8px 32px rgba(23,27,43,0.12)' }}>
               <div className="relative">
                 <img
                   src={property.images[activeImage] || property.images[0]}
@@ -138,11 +141,11 @@ export function PropertyDetailPage() {
                 Amenities
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {property.amenities.map((amenity) => (
+                {property.amenities.map((amenity, index) => (
                   <div
                     key={amenity}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-ghost/20 text-sm text-jet"
-                  style={{ boxShadow: '0 1px 4px rgba(23,27,43,0.05)' }}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-ghost/20 text-sm text-jet animate-fade-up"
+                  style={{ boxShadow: '0 1px 4px rgba(23,27,43,0.05)', animationDelay: `${index * 40}ms` }}
                   >
                     <span className="text-coral">
                       {AMENITY_ICONS[amenity] || <CheckCircle size={16} />}
@@ -171,8 +174,8 @@ export function PropertyDetailPage() {
 
               {/* Transport links */}
               <div className="flex flex-col gap-2.5">
-                {property.transport.map((t) => (
-                  <div key={t} className="flex items-center gap-2.5 text-sm text-slate-brand">
+                {property.transport.map((t, index) => (
+                  <div key={t} className="flex items-center gap-2.5 text-sm text-slate-brand animate-fade-up" style={{ animationDelay: `${index * 50}ms` }}>
                     <MapPin size={13} className="text-coral shrink-0" />
                     {t}
                   </div>
@@ -182,7 +185,7 @@ export function PropertyDetailPage() {
           </div>
 
           {/* Right sticky column */}
-          <aside className="lg:w-80 shrink-0">
+          <aside ref={asideRef as React.RefObject<HTMLElement>} className={`lg:w-80 shrink-0 ${asideVisible ? 'animate-fade-up' : 'opacity-0'}`} style={{ animationDelay: '100ms' }}>
             <div
               className="rounded-2xl p-6 bg-white sticky top-24"
               style={{ boxShadow: '0 4px 40px rgba(23,27,43,0.08)' }}
@@ -206,14 +209,14 @@ export function PropertyDetailPage() {
 
               <div className="mt-5 flex flex-col gap-3">
                 <button
-                  className="w-full px-6 py-3 rounded-xl text-white font-semibold transition-opacity hover:opacity-90"
+                  className="w-full px-6 py-3 rounded-xl text-white font-semibold transition-opacity hover:opacity-90 active:scale-[0.97] transition-transform"
                   style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
                   onClick={() => setViewingRequested(true)}
                 >
                   {viewingRequested ? '✓ Viewing Requested' : 'Request Viewing'}
                 </button>
                 <button
-                  className="w-full px-6 py-3 rounded-lg border border-ghost/20 text-jet font-medium hover:bg-surface-low transition-colors flex items-center justify-center gap-2"
+                  className="w-full px-6 py-3 rounded-lg border border-ghost/20 text-jet font-medium hover:bg-surface-low transition-colors flex items-center justify-center gap-2 active:scale-[0.97]"
                   onClick={() => setWishlisted(!wishlisted)}
                 >
                   <Heart size={15} fill={wishlisted ? '#ef8354' : 'none'} stroke={wishlisted ? '#ef8354' : '#2d3142'} />
@@ -256,6 +259,7 @@ export function PropertyDetailPage() {
                     <div className="flex gap-2">
                       <button
                         type="button"
+                        onClick={() => navigate('/chat/c1', { viewTransition: true })}
                         className="flex-1 py-2.5 rounded-xl text-sm font-medium border border-ghost/40 text-jet hover:bg-surface-low transition-colors"
                       >
                         Chat with roommate
@@ -296,6 +300,7 @@ export function PropertyDetailPage() {
                   </div>
                   <button
                     type="button"
+                    onClick={() => navigate('/chat/c1', { viewTransition: true })}
                     className="w-full px-6 py-3 rounded-lg border border-ghost/20 text-jet font-medium hover:bg-surface-low transition-colors flex items-center justify-center gap-2"
                   >
                     <MessageSquare size={14} />

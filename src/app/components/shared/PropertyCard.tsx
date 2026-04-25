@@ -4,11 +4,12 @@ import type { Property } from '@/types';
 
 interface PropertyCardProps {
   property: Property;
-  onWishlistToggle?: (id: string) => void;
-  isWishlisted?: boolean;
+  isWishlisted: boolean;
+  onWishlistToggle: (id: string) => void;
+  onClick?: () => void;
 }
 
-export function PropertyCard({ property, onWishlistToggle, isWishlisted = false }: PropertyCardProps) {
+export function PropertyCard({ property, onWishlistToggle, isWishlisted, onClick }: PropertyCardProps) {
   const navigate = useNavigate();
 
   return (
@@ -17,7 +18,7 @@ export function PropertyCard({ property, onWishlistToggle, isWishlisted = false 
       style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}
       onMouseEnter={(e) => (e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.12)')}
       onMouseLeave={(e) => (e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)')}
-      onClick={() => navigate(`/property/${property.id}`)}
+      onClick={() => onClick ? onClick() : navigate(`/property/${property.id}`)}
     >
       {/* Inset image with own rounded corners */}
       <div className="relative m-3 rounded-xl overflow-hidden h-52">

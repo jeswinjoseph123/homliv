@@ -22,6 +22,7 @@ export function MyListingsTab({ roommateListings, onListingsChange }: MyListings
   const [newDate, setNewDate] = useState<Record<string, string>>({});
   const [editForm, setEditForm] = useState<Record<string, EditForm>>({});
   const [savedId, setSavedId] = useState<string | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const atLimit = roommateListings.length >= 2;
   const now = MODULE_NOW;
@@ -159,11 +160,16 @@ export function MyListingsTab({ roommateListings, onListingsChange }: MyListings
           return (
             <div
               key={listing.id}
-              className="bg-white rounded-2xl overflow-hidden group"
+              className="animate-fade-up bg-white rounded-2xl overflow-hidden group"
               style={{
-                boxShadow: '0 4px 20px rgba(23,27,43,0.09), 0 1px 4px rgba(23,27,43,0.05)',
+                animationDelay: `${roommateListings.indexOf(listing) * 80}ms`,
+                boxShadow: hoveredId === listing.id ? '0 16px 48px rgba(23,27,43,0.12)' : '0 4px 20px rgba(23,27,43,0.09), 0 1px 4px rgba(23,27,43,0.05)',
+                transform: hoveredId === listing.id ? 'translateY(-4px)' : 'translateY(0)',
+                transition: 'transform 200ms ease, box-shadow 200ms ease',
                 opacity: expired ? 0.65 : 1,
               }}
+              onMouseEnter={() => setHoveredId(listing.id)}
+              onMouseLeave={() => setHoveredId(null)}
             >
               {/* Image */}
               <div className="relative m-3 rounded-xl overflow-hidden h-48">

@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { BadgeCheck, MessageSquare, Wrench } from 'lucide-react';
+import { toast } from 'sonner';
 import { LogoMark } from '../components/shared/LogoMark';
+import { useSessionStore } from '../../hooks/useSessionStore';
 
 const BG_IMAGE = 'https://images.unsplash.com/photo-1696743297474-d674b8e3d82a?w=1200&q=80';
 
 export function LandlordSignupPage() {
   const navigate = useNavigate();
+  const { setRole } = useSessionStore();
   const [activeTab, setActiveTab] = useState<'signin' | 'create'>('signin');
   const [form, setForm] = useState({
     fullName: '',
@@ -98,7 +101,7 @@ export function LandlordSignupPage() {
 
       {/* Right panel — form */}
       <div className="bg-white flex flex-col justify-center items-center p-8 lg:p-12 lg:flex-1">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md animate-fade-up">
 
           <h2 className="font-bold text-[1.75rem] tracking-[-0.02em] text-jet mb-1">
             {activeTab === 'signin' ? 'Welcome back' : 'Create Account'}
@@ -129,6 +132,7 @@ export function LandlordSignupPage() {
 
           <form onSubmit={(e) => {
             e.preventDefault();
+            setRole('landlord');
             navigate(activeTab === 'create' ? '/landlord/verify' : '/dashboard');
           }}>
 
@@ -242,7 +246,7 @@ export function LandlordSignupPage() {
 
             <button
               type="submit"
-              className="w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-opacity hover:opacity-90"
+              className="w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-opacity hover:opacity-90 active:scale-[0.97] transition-transform"
               style={{ background: 'linear-gradient(180deg, #d47550 0%, #b85530 100%)' }}
             >
               {activeTab === 'signin' ? 'Sign In →' : 'Create Landlord Account →'}
@@ -255,7 +259,7 @@ export function LandlordSignupPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-3 mb-6">
-              <button type="button" className="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium border border-ghost/40 text-jet hover:bg-surface-low transition-colors">
+              <button type="button" onClick={() => toast.info('OAuth available after launch')} className="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium border border-ghost/40 text-jet hover:bg-surface-low transition-colors active:scale-[0.97] transition-transform">
                 <svg width="18" height="18" viewBox="0 0 48 48">
                   <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
                   <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
@@ -264,7 +268,7 @@ export function LandlordSignupPage() {
                 </svg>
                 Google
               </button>
-              <button type="button" className="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium border border-ghost/40 text-jet hover:bg-surface-low transition-colors">
+              <button type="button" onClick={() => toast.info('OAuth available after launch')} className="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium border border-ghost/40 text-jet hover:bg-surface-low transition-colors active:scale-[0.97] transition-transform">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="#171b2b">
                   <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
                 </svg>

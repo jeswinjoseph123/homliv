@@ -16,10 +16,10 @@ export function Footer() {
               Redefining urban living through curated properties and intelligent management.
             </p>
             <div className="flex gap-3 mt-5">
-              <button className="w-8 h-8 rounded-full flex items-center justify-center bg-white/[0.08] hover:bg-white/15 transition-colors">
+              <button onClick={(e) => e.preventDefault()} className="w-8 h-8 rounded-full flex items-center justify-center bg-white/[0.08] hover:bg-white/15 transition-colors">
                 <Globe size={14} className="text-white/60" />
               </button>
-              <button className="w-8 h-8 rounded-full flex items-center justify-center bg-white/[0.08] hover:bg-white/15 transition-colors">
+              <button onClick={(e) => e.preventDefault()} className="w-8 h-8 rounded-full flex items-center justify-center bg-white/[0.08] hover:bg-white/15 transition-colors">
                 <AtSign size={14} className="text-white/60" />
               </button>
             </div>
@@ -29,7 +29,7 @@ export function Footer() {
             <p className="text-white text-xs font-bold tracking-[0.08em] uppercase mb-4">Platform</p>
             <div className="flex flex-col gap-3">
               {['Listings', 'How it works', 'Pricing', 'Case Studies'].map((item) => (
-                <Link key={item} to="/" className="text-white/60 text-sm hover:text-white/90 transition-colors">
+                <Link key={item} to={item === 'Listings' ? '/listings' : '#'} className="text-white/60 text-sm hover:text-white/90 transition-colors">
                   {item}
                 </Link>
               ))}

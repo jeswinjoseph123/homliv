@@ -13,6 +13,8 @@ import { RoommateSignupPage } from './pages/RoommateSignupPage';
 import { RoommateVerifyPage } from './pages/RoommateVerifyPage';
 import { RoommateDashboard } from './pages/RoommateDashboard';
 import { ListRoomPage } from './pages/roommate/ListRoomPage';
+import { AdminLoginPage } from './pages/AdminLoginPage';
+import { AdminDashboard } from './pages/AdminDashboard';
 
 export const router = createBrowserRouter([
   { path: '/',                  Component: HomePage },
@@ -30,7 +32,9 @@ export const router = createBrowserRouter([
   { path: '/roommate/verify',   Component: RoommateVerifyPage },
   // Roommate Phase 2 routes
   { path: '/roommate/dashboard', Component: RoommateDashboard },
-  { path: '/roommate/listings',  element: <Navigate to="/roommate" replace /> },
+  { path: '/roommate/listings',  element: <Navigate to="/roommate/dashboard" replace /> },
   { path: '/roommate/list-room', Component: ListRoomPage },
+  { path: '/admin/login',     Component: AdminLoginPage },
+  { path: '/admin/dashboard', Component: AdminDashboard },
   { path: '*',                  Component: HomePage },
 ]);
