@@ -84,7 +84,7 @@ export function VerificationsTab() {
         <p className="text-xs text-slate-brand mt-0.5">Pending identity and ownership requests</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {STATS.map((s, i) => (
           <div
             key={s.label}
@@ -114,16 +114,17 @@ export function VerificationsTab() {
           <span className="text-[0.68rem] font-bold uppercase tracking-[0.05em] text-slate-brand">{MOCK_VERIFICATIONS.length} total</span>
         </div>
 
+        <div className="overflow-auto rounded-b-xl max-h-[480px]">
         <table className="w-full table-fixed border-collapse">
           <colgroup>
             <col style={{ width: '22%' }} />
             <col style={{ width: '12%' }} />
-            <col style={{ width: '14%' }} />
-            <col style={{ width: '26%' }} />
             <col style={{ width: '12%' }} />
-            <col style={{ width: '14%' }} />
+            <col style={{ width: '22%' }} />
+            <col style={{ width: '12%' }} />
+            <col style={{ width: '20%' }} />
           </colgroup>
-          <thead>
+          <thead className="sticky top-0 z-10">
             <tr>
               {(['Applicant', 'Role', 'Submitted', 'Documents', 'Status', 'Actions'] as const).map(h => (
                 <th key={h} className="px-5 py-3 text-left text-[0.68rem] font-bold uppercase tracking-[0.06em] text-slate-brand bg-[#f5f5f7]">
@@ -185,6 +186,7 @@ export function VerificationsTab() {
             })}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

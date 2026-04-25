@@ -201,6 +201,7 @@ export function OverviewTab({ onListProperty, isVerified, onNav }: OverviewTabPr
           </button>
         </div>
 
+        <div className="overflow-auto rounded-b-xl max-h-[480px]">
         <table className="w-full table-fixed border-collapse">
           <colgroup>
             <col style={{ width: '28%' }} />
@@ -210,7 +211,7 @@ export function OverviewTab({ onListProperty, isVerified, onNav }: OverviewTabPr
             <col style={{ width: '11%' }} />
             <col style={{ width: '14%' }} />
           </colgroup>
-          <thead>
+          <thead className="sticky top-0 z-10">
             <tr className="bg-[#f5f5f7]">
               {TABLE_COLS.map((col, idx) => (
                 <th
@@ -279,6 +280,7 @@ export function OverviewTab({ onListProperty, isVerified, onNav }: OverviewTabPr
             ))}
           </tbody>
         </table>
+        </div>
 
       </div>
 

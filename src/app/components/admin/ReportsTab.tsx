@@ -28,7 +28,7 @@ export function ReportsTab() {
         <p className="text-xs text-slate-brand mt-0.5">Flagged content and user complaints</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {STATS.map((s, i) => (
           <div
             key={s.label}
@@ -64,6 +64,7 @@ export function ReportsTab() {
             <p className="text-sm font-medium">No reports filed</p>
           </div>
         ) : (
+          <div className="overflow-x-auto rounded-b-xl">
           <table className="w-full table-fixed border-collapse">
             <colgroup>
               <col style={{ width: '10%' }} />
@@ -74,7 +75,7 @@ export function ReportsTab() {
               <col style={{ width: '10%' }} />
               <col style={{ width: '10%' }} />
             </colgroup>
-            <thead>
+            <thead className="sticky top-0 z-10">
               <tr>
                 {(['Report ID', 'Listing', 'Reported By', 'Reason', 'Date', 'Status', 'Actions'] as const).map(h => (
                   <th key={h} className="px-4 py-3 text-left text-[0.68rem] font-bold uppercase tracking-[0.06em] text-slate-brand bg-[#f5f5f7]">
@@ -126,6 +127,7 @@ export function ReportsTab() {
               })}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

@@ -239,6 +239,7 @@ export function PaymentsTab() {
 
       {/* Rent Tracker Table */}
       <div className="bg-white rounded-xl shadow-[0_4px_20px_rgba(23,27,43,0.09),_0_1px_4px_rgba(23,27,43,0.05)]">
+        <div className="overflow-auto rounded-xl max-h-[480px]">
         <table className="w-full table-fixed border-collapse">
           <colgroup>
             <col style={{ width: '26%' }} />
@@ -248,7 +249,7 @@ export function PaymentsTab() {
             <col style={{ width: '12%' }} />
             <col style={{ width: '10%' }} />
           </colgroup>
-          <thead>
+          <thead className="sticky top-0 z-10">
             <tr className="bg-[#f5f5f7]">
               {(['Property', 'Tenant', 'Amount', 'Due Date', 'Status', 'Actions'] as const).map((h, idx) => (
                 <th
@@ -296,6 +297,7 @@ export function PaymentsTab() {
             })}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Property Payment History */}

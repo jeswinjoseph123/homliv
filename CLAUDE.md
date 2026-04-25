@@ -34,13 +34,14 @@ src/
     components/
       layout/        # Navbar, Footer
       shared/        # PropertyCard, LogoMark, StatusBadge, ChatInterface
+      admin/         # AdminDashboard tab components
       landlord/      # LandlordDashboard tab components + verify/ wizard steps
       roommate/      # RoommateDashboard tab components
       tenant/        # TenantDashboard split components
       ui/            # shadcn/ui components (auto-generated, do not edit)
     pages/           # One file per route
   data/              # Mock data only — mockProperties.ts (14 properties)
-  hooks/             # useWishlist, useChat, useVerificationStore, useRoommateStore, useCountUp, useScrollReveal
+  hooks/             # useWishlist, useChat, useVerificationStore, useRoommateStore, useAdminStore, useSessionStore, useCountUp, useScrollReveal
   lib/               # utils.ts (shadcn helper + custom utils)
   types/             # Shared TypeScript interfaces (index.ts)
 ```
@@ -494,6 +495,97 @@ If `!isVerified`: amber banner shown with "Verify Identity" button → `/roommat
 
 ---
 
+## Admin Dashboard — Component Split
+
+`AdminDashboard.tsx` is a **thin shell** with auth guard — redirects to `/admin/login` if `!isAdmin`. All tab UI lives in `src/app/components/admin/`.
+
+```
+src/app/components/admin/
+  types.ts              — AdminTab union + MockAdminUser + MockVerificationRequest interfaces
+  AdminSidebar.tsx      — sidebar nav + mobile backdrop + logout (props: activeTab, onNav, isOpen, onClose)
+  OverviewTab.tsx       — KPI cards + recent activity feed (props: onNav: (tab: AdminTab) => void)
+  UsersTab.tsx          — user list table (no special props)
+  ListingsTab.tsx       — all platform listings table (no special props)
+  ReportsTab.tsx        — reported content table (no special props)
+  VerificationsTab.tsx  — pending verification requests table (no special props)
+  PaymentsTab.tsx       — platform payments table (no special props)
+  SettingsTab.tsx       — admin settings (no special props)
+```
+
+**State owned by AdminDashboard.tsx:**
+- `activeTab`, `sidebarOpen`
+- `isAdmin` — read from `useAdminStore` (not local state); redirects to `/admin/login` if false
+
+### Hook: `useAdminStore`
+
+`src/hooks/useAdminStore.ts` — localStorage-backed (`homliv_admin_session`).
+
+```ts
+const { isAdmin, login, logout } = useAdminStore();
+// login()  → sets homliv_admin_session = 'true'
+// logout() → removes key → redirects to /admin/login
+```
+
+### Admin credentials (mock)
+
+- Email: `admin@homliv.com` — hardcoded in `AdminLoginPage.tsx`
+- Password: any non-empty value accepted (no real auth)
+
+### Admin auth guard
+
+`AdminDashboard` uses `useEffect` to redirect if `!isAdmin` — this is the **only** route with an auth guard. All other routes are open mock navigation.
+
+---
+
+## Session State — useSessionStore
+
+`src/hooks/useSessionStore.ts` — resolves `dashboardPath` from all 4 role localStorage keys.
+
+```ts
+const { dashboardPath, setRole } = useSessionStore();
+// dashboardPath: '/admin/dashboard' | '/roommate/dashboard' | '/tenant-dashboard' | '/dashboard' | null
+```
+
+**Auth pages must call `setRole()` before navigating:**
+- `TenantLoginPage` → `setRole('tenant')` → navigate `/tenant-dashboard`
+- `LandlordSignupPage` → `setRole('landlord')` → navigate `/dashboard` or `/landlord/verify`
+
+**Navbar** reads `dashboardPath` — shows a "Dashboard" link beside "Listings" when non-null (role-aware, works for all 4 user types).
+
+localStorage keys managed by `useSessionStore`:
+
+| Key | Values | Set by |
+|---|---|---|
+| `homliv_session` | `'tenant'` \| `'landlord'` \| null | `useSessionStore.setRole` |
+| `homliv_admin_session` | `'true'` | `useAdminStore.login` |
+| `homliv_roommate_role` | `'true'` | `useRoommateStore.setRoommate` |
+| `homliv_landlord_verified` | `'true'` | `useVerificationStore.setVerified` |
+
+---
+
+## Scrollable Dashboard Tables
+
+Tables that may overflow must use this scroll wrapper (NOT `overflow-hidden` on the card):
+
+```tsx
+<div className="overflow-auto rounded-b-xl max-h-[480px]">
+  <table className="w-full table-fixed border-collapse">
+    <thead className="sticky top-0 z-10">
+      <tr>
+        <th className="... bg-[#f5f5f7]">...</th>
+```
+
+Keeps `<thead>` sticky within the scroll container without clipping dropdowns.
+
+---
+
+## Responsive Patterns
+
+- Stat grids: always `grid-cols-1 sm:grid-cols-N` — never static `grid-cols-N` alone
+- Multi-column info strips: `flex flex-col sm:grid sm:grid-cols-3` with `divide-y sm:divide-y-0 sm:divide-x divide-ghost/20`
+
+---
+
 ## Shared Chat Component
 
 `src/app/components/shared/ChatInterface.tsx` — reusable chat UI used by:
@@ -595,9 +687,11 @@ export interface Report { id: string; listingId: string; reportedBy: string; rea
 /roommate/verify        → RoommateVerifyPage
 /roommate/dashboard     → RoommateDashboard
 /roommate/list-room     → ListRoomPage
+/admin/login            → AdminLoginPage
+/admin/dashboard        → AdminDashboard
 ```
 
-All routes are client-side. No auth guard needed — mock navigation only.
+All routes are client-side. **Exception:** `/admin/dashboard` has an auth guard — redirects to `/admin/login` if `!isAdmin` from `useAdminStore`.
 
 ---
 
@@ -785,6 +879,8 @@ Rules:
 - **Verification state is localStorage-only** — `useVerificationStore` persists `homliv_landlord_verified`. No backend. When backend ships, replace the hook.
 - **`useVerificationStore` is consumed by 4 components** — `LandlordDashboard`, `OverviewTab` (via prop), `PropertiesTab` (via prop), `SettingsTab` (direct). Any change to the store interface touches all four.
 - **`useRoommateStore` mirrors `useVerificationStore` pattern** — localStorage-backed, consumed by `RoommateDashboard`, `RoommateVerifyPage`, `OverviewTab` (roommate). Keys: `homliv_roommate_role` + `homliv_roommate_verified`.
+- **`useSessionStore` is a role resolver** — reads all 4 role keys to return `dashboardPath`. Auth pages call `setRole()` on submit. Navbar consumes `dashboardPath` to show contextual "Dashboard" link.
+- **`useAdminStore` guards `/admin/dashboard`** — the only route with a real auth redirect. Login: `admin@homliv.com` + any password (mock). Key: `homliv_admin_session`.
 - **39 shadcn/ui components all depend on `cn()` in `src/app/components/ui/utils.ts`** — never edit or move this file.
 
 ### Community Map (key communities)

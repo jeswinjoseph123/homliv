@@ -28,7 +28,7 @@ export function TenantsTab({ onNav }: TenantsTabProps) {
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div
           className="bg-white rounded-xl p-4 flex flex-col gap-1.5"
           onMouseEnter={() => setCard0Hovered(true)}
@@ -99,6 +99,7 @@ export function TenantsTab({ onNav }: TenantsTabProps) {
           <span className="text-[0.68rem] font-bold uppercase tracking-[0.05em] text-slate-brand">{total} total</span>
         </div>
 
+        <div className="overflow-auto rounded-b-xl max-h-[480px]">
         <table className="w-full table-fixed border-collapse">
           <colgroup>
             <col style={{ width: '24%' }} />
@@ -108,7 +109,7 @@ export function TenantsTab({ onNav }: TenantsTabProps) {
             <col style={{ width: '10%' }} />
             <col style={{ width: '14%' }} />
           </colgroup>
-          <thead>
+          <thead className="sticky top-0 z-10">
             <tr className="bg-[#f5f5f7]">
               {(['Tenant', 'Property', 'Rent Due', 'Status', 'Tickets', 'Action'] as const).map((h, i) => (
                 <th
@@ -179,6 +180,7 @@ export function TenantsTab({ onNav }: TenantsTabProps) {
             })}
           </tbody>
         </table>
+        </div>
       </div>
 
     </div>

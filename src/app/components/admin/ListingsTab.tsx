@@ -50,7 +50,7 @@ export function ListingsTab() {
         <p className="text-xs text-slate-brand mt-0.5">All platform listings</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {STATS.map((s, i) => (
           <div
             key={s.label}
@@ -80,6 +80,7 @@ export function ListingsTab() {
           <span className="text-[0.68rem] font-bold uppercase tracking-[0.05em] text-slate-brand">{total} total</span>
         </div>
 
+        <div className="overflow-auto rounded-b-xl max-h-[480px]">
         <table className="w-full table-fixed border-collapse">
           <colgroup>
             <col style={{ width: '23%' }} />
@@ -90,7 +91,7 @@ export function ListingsTab() {
             <col style={{ width: '11%' }} />
             <col style={{ width: '13%' }} />
           </colgroup>
-          <thead>
+          <thead className="sticky top-0 z-10">
             <tr>
               {(['Title', 'Type', 'Location', 'Price', 'Posted By', 'Status', ''] as const).map(h => (
                 <th key={h} className="px-4 py-3 text-left text-[0.68rem] font-bold uppercase tracking-[0.06em] text-slate-brand bg-[#f5f5f7]">
@@ -151,6 +152,7 @@ export function ListingsTab() {
             })}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

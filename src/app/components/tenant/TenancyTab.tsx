@@ -54,7 +54,7 @@ export function TenancyTab({ onNav, onRaiseTicket }: TenancyTabProps) {
 
       {/* Lease details strip */}
       <div className="bg-white rounded-xl shadow-[0_4px_20px_rgba(23,27,43,0.09),_0_1px_4px_rgba(23,27,43,0.05)]">
-        <div className="grid grid-cols-3 divide-x divide-ghost/20">
+        <div className="flex flex-col sm:grid sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-ghost/20">
           {[
             { label: 'Lease Dates',   value: '1 Feb 2024 – 31 Jan 2025', sub: null,          subColor: ''           },
             { label: 'Monthly Rent',  value: '€950',                      sub: 'per month',   subColor: ''           },

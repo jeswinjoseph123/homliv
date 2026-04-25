@@ -29,7 +29,7 @@ export function MaintenanceTab() {
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div
           className="rounded-xl p-4 flex flex-col gap-1.5"
           onMouseEnter={() => setCard0Hovered(true)}
@@ -103,6 +103,7 @@ export function MaintenanceTab() {
           <span className="text-[0.68rem] font-bold uppercase tracking-[0.05em] text-slate-brand">{mockTickets.length} total</span>
         </div>
 
+        <div className="overflow-auto rounded-b-xl max-h-[480px]">
         <table className="w-full table-fixed border-collapse">
           <colgroup>
             <col style={{ width: '9%' }} />
@@ -113,7 +114,7 @@ export function MaintenanceTab() {
             <col style={{ width: '12%' }} />
             <col style={{ width: '11%' }} />
           </colgroup>
-          <thead>
+          <thead className="sticky top-0 z-10">
             <tr className="bg-[#f5f5f7]">
               {(['ID', 'Tenant', 'Property', 'Issue', 'Priority', 'Status', 'Action'] as const).map((h) => (
                 <th key={h} className="px-4 py-3 text-left text-[0.68rem] font-bold uppercase tracking-[0.06em] text-slate-brand">
@@ -166,6 +167,7 @@ export function MaintenanceTab() {
             })}
           </tbody>
         </table>
+        </div>
       </div>
 
     </div>

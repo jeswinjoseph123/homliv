@@ -110,7 +110,7 @@ export function OverviewTab({ onNav, hasActiveListing, expiryDate, isVerified }:
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
         <div
           className="animate-fade-up bg-white rounded-xl p-4 flex flex-col gap-1.5"

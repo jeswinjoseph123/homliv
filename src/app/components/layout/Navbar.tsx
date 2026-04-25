@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router';
 import { Menu, X, Bell } from 'lucide-react';
 import { toast } from 'sonner';
 import { LogoMark } from '../shared/LogoMark';
+import { useSessionStore } from '../../../hooks/useSessionStore';
 
 interface NavbarUser {
   name: string;
@@ -18,6 +19,7 @@ export function Navbar({ onSidebarToggle, user }: NavbarProps = {}) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
+  const { dashboardPath } = useSessionStore();
 
   const handleMobileToggle = () => {
     if (onSidebarToggle) {
@@ -36,19 +38,29 @@ export function Navbar({ onSidebarToggle, user }: NavbarProps = {}) {
               <LogoMark size={22} className="text-coral" />
               <span className="text-white font-bold text-lg tracking-tight">HomLiv</span>
             </Link>
-            <div className="hidden md:flex items-center">
+            <div className="hidden md:flex items-center gap-6">
               <Link
                 to="/listings"
                 className={`text-sm font-medium transition-colors pb-0.5 border-b-2 ${
                   isActive('/listings')
                     ? 'text-coral border-coral'
-                    : 'text-white/75 border-transparent hover:text-white'
+                    : 'text-white/75 border-transparent hover:text-white hover:border-white/40'
                 }`}
               >
-                <span className="relative after:absolute after:bottom-[-2px] after:left-0 after:h-[2px] after:w-0 after:bg-coral after:transition-all after:duration-200 hover:after:w-full">
-                  Listings
-                </span>
+                Listings
               </Link>
+              {dashboardPath && (
+                <Link
+                  to={dashboardPath}
+                  className={`text-sm font-medium transition-colors pb-0.5 border-b-2 ${
+                    location.pathname === dashboardPath
+                      ? 'text-coral border-coral'
+                      : 'text-white/75 border-transparent hover:text-white hover:border-white/40'
+                  }`}
+                >
+                  Dashboard
+                </Link>
+              )}
             </div>
           </div>
 
@@ -114,6 +126,15 @@ export function Navbar({ onSidebarToggle, user }: NavbarProps = {}) {
             >
               Listings
             </Link>
+            {dashboardPath && (
+              <Link
+                to={dashboardPath}
+                onClick={() => setMobileOpen(false)}
+                className="text-white/80 font-medium text-sm hover:text-white"
+              >
+                Dashboard
+              </Link>
+            )}
             <Link
               to="/login"
               onClick={() => setMobileOpen(false)}

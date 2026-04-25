@@ -50,7 +50,7 @@ export function PaymentsTab() {
         <p className="text-xs text-slate-brand mt-0.5">Platform-wide rent tracker</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {STATS.map((s, i) => (
           <div
             key={s.label}
@@ -80,6 +80,7 @@ export function PaymentsTab() {
           <span className="text-[0.68rem] font-bold uppercase tracking-[0.05em] text-slate-brand">{mockTenants.length} tenants</span>
         </div>
 
+        <div className="overflow-auto rounded-b-xl max-h-[480px]">
         <table className="w-full table-fixed border-collapse">
           <colgroup>
             <col style={{ width: '22%' }} />
@@ -89,7 +90,7 @@ export function PaymentsTab() {
             <col style={{ width: '12%' }} />
             <col style={{ width: '16%' }} />
           </colgroup>
-          <thead>
+          <thead className="sticky top-0 z-10">
             <tr>
               {(['Tenant', 'Property', 'Amount', 'Due Date', 'Status', 'Actions'] as const).map(h => (
                 <th key={h} className="px-5 py-3 text-left text-[0.68rem] font-bold uppercase tracking-[0.06em] text-slate-brand bg-[#f5f5f7]">
@@ -155,6 +156,7 @@ export function PaymentsTab() {
             })}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

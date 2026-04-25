@@ -3,11 +3,13 @@ import { Link, useNavigate } from 'react-router';
 import { BadgeCheck, MessageSquare, Wrench } from 'lucide-react';
 import { toast } from 'sonner';
 import { LogoMark } from '../components/shared/LogoMark';
+import { useSessionStore } from '../../hooks/useSessionStore';
 
 const BG_IMAGE = 'https://images.unsplash.com/photo-1696743297474-d674b8e3d82a?w=1200&q=80';
 
 export function LandlordSignupPage() {
   const navigate = useNavigate();
+  const { setRole } = useSessionStore();
   const [activeTab, setActiveTab] = useState<'signin' | 'create'>('signin');
   const [form, setForm] = useState({
     fullName: '',
@@ -130,6 +132,7 @@ export function LandlordSignupPage() {
 
           <form onSubmit={(e) => {
             e.preventDefault();
+            setRole('landlord');
             navigate(activeTab === 'create' ? '/landlord/verify' : '/dashboard');
           }}>
 

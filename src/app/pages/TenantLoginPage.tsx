@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import { Eye, EyeOff, Search, Heart, MessageCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { LogoMark } from '../components/shared/LogoMark';
+import { useSessionStore } from '../../hooks/useSessionStore';
 
 const BG_IMAGE = 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=1200&q=80';
 
@@ -13,8 +14,9 @@ export function TenantLoginPage() {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const navigate = useNavigate();
+  const { setRole } = useSessionStore();
 
-  const handleSubmit = () => navigate('/tenant-dashboard');
+  const handleSubmit = () => { setRole('tenant'); navigate('/tenant-dashboard'); };
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
